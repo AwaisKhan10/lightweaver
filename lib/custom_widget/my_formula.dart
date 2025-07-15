@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lightweaver/core/constants/app_assest.dart';
 import 'package:lightweaver/core/constants/colors.dart';
 import 'package:lightweaver/core/constants/text_style.dart';
-import 'package:lightweaver/core/model/remedies_categories.dart';
 
 class MyFormulaCardWisget extends StatelessWidget {
   // final RemedyCategoryModel remedyCategoryModel;

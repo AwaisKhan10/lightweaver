@@ -5,11 +5,12 @@ class RemedyDetailsModel {
   String? image;
   List<String>? keywords;
   List<String>? related;
-  List<String>? forCondition; // 'for' is reserved, so renamed
+  List<String>? forCondition;
   String? category;
   List<String>? properties;
   List<String>? chakras;
   String? element;
+  String? createdBy;
 
   RemedyDetailsModel({
     this.name,
@@ -23,37 +24,23 @@ class RemedyDetailsModel {
     this.properties,
     this.chakras,
     this.element,
+    this.createdBy,
   });
 
   factory RemedyDetailsModel.fromJson(Map<String, dynamic> json) {
     return RemedyDetailsModel(
       name: json['name'] as String?,
       description: json['description'] as String?,
-      symptoms:
-          (json['symptoms'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
+      symptoms: _parseStringOrList(json['dosage']),
       image: json['image'] as String?,
-      keywords:
-          (json['keywords'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
-      related:
-          (json['related'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
-      forCondition:
-          (json['for'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
+      keywords: _parseStringOrList(json['keywords/Tags']),
+      related: _parseStringOrList(json['related']),
+      forCondition: _parseStringOrList(json['for']),
       category: json['category'] as String?,
-      properties:
-          (json['properties'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
-      chakras:
-          (json['chakras'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
+      properties: _parseStringOrList(json['essences/properties']),
+      chakras: _parseStringOrList(json['chakras']),
       element: json['element'] as String?,
+      createdBy: json['createdBy'] as String?,
     );
   }
 
@@ -61,15 +48,36 @@ class RemedyDetailsModel {
     return {
       'name': name,
       'description': description,
-      'symptoms': symptoms,
+      'dosage': symptoms,
       'image': image,
-      'keywords': keywords,
+      'keywords/Tags': keywords,
       'related': related,
       'for': forCondition,
       'category': category,
-      'properties': properties,
+      'essences/properties': properties,
       'chakras': chakras,
       'element': element,
+      'createdBy': createdBy,
     };
+  }
+
+  /// Helper method to safely parse String or List into List<String>
+  static List<String>? _parseStringOrList(dynamic input) {
+    if (input == null) return null;
+
+    if (input is String) {
+      // Handle comma-separated strings
+      return input
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
+    }
+
+    if (input is List) {
+      return input.map((e) => e.toString()).toList();
+    }
+
+    return null;
   }
 }

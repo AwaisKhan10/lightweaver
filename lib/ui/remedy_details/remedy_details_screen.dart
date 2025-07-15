@@ -80,7 +80,7 @@ class RemedyDetailsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        model.remedyList.isEmpty
+                        model.remedyList.isEmpty && model.remedyList == null
                             ? Center(
                               child: Text(
                                 "There is no Remedy Details",
@@ -106,7 +106,10 @@ class RemedyDetailsScreen extends StatelessWidget {
                                       index: index,
                                       model: model,
                                       title:
-                                          model.remedyList[index].categoryName!,
+                                          model
+                                              .remedyList[index]
+                                              .categoryName ??
+                                          "",
                                       onTap: () {
                                         model.selectQuickLink(index);
                                         model.selectTabFunction(index);
@@ -127,28 +130,35 @@ class RemedyDetailsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             10.verticalSpace,
-                            ListView.builder(
-                              itemCount: model.filteredRemedies.length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context, int index) {
-                                final remedy = model.filteredRemedies[index];
-                                return CustomRemedyDetailsCardWidget(
-                                  remedyCategoryModel: RemedyCategoryModel(
-                                    remedies: [remedy],
-                                  ), // workaround
-                                  isSelected: model.selectedCardIndex == index,
-                                  onTap: () {
-                                    Get.to(
-                                      RemedyFormulaDetailScreen(
-                                        remedyDetailsModel: remedy,
-                                      ),
+                            model.filteredRemedies == null
+                                ? Text("data is empty")
+                                : ListView.builder(
+                                  itemCount: model.filteredRemedies.length,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (
+                                    BuildContext context,
+                                    int index,
+                                  ) {
+                                    final remedy =
+                                        model.filteredRemedies[index];
+                                    return CustomRemedyDetailsCardWidget(
+                                      remedyCategoryModel: RemedyCategoryModel(
+                                        remedies: [remedy],
+                                      ), // workaround
+                                      isSelected:
+                                          model.selectedCardIndex == index,
+                                      onTap: () {
+                                        Get.to(
+                                          RemedyFormulaDetailScreen(
+                                            remedyDetailsModel: remedy,
+                                          ),
+                                        );
+                                      },
+                                      index: 0,
                                     );
                                   },
-                                  index: index,
-                                );
-                              },
-                            ),
+                                ),
 
                             50.verticalSpace,
                           ],
@@ -179,23 +189,26 @@ Widget _customTabs({
   return GestureDetector(
     onTap: onTap,
 
-    child: Container(
-      margin: EdgeInsets.only(left: 10),
-      decoration: BoxDecoration(
-        color: isSelected ? primaryColor : whiteColor,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-        child: Center(
-          child: Text(
-            title,
-            style: style14.copyWith(
-              color: isSelected ? whiteColor : blackColor,
+    child:
+        title.isEmpty
+            ? SizedBox()
+            : Container(
+              margin: EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                color: isSelected ? primaryColor : whiteColor,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                child: Center(
+                  child: Text(
+                    title ?? "",
+                    style: style14.copyWith(
+                      color: isSelected ? whiteColor : blackColor,
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-    ),
   );
 }

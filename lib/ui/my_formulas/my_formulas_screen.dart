@@ -259,6 +259,7 @@ class MyFormulasScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
+        height: 300,
         padding: EdgeInsets.all(16),
         width: double.infinity,
         decoration: BoxDecoration(
@@ -301,69 +302,76 @@ class MyFormulasScreen extends StatelessWidget {
 
             model.searchQuery.isNotEmpty && model.filteredRemedies.isEmpty
                 ? Center(child: Text("No remedies match your search."))
-                : ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount:
-                      model.filteredRemedies.isNotEmpty
-                          ? model.filteredRemedies.length
-                          : model.allRemediesFlat.length,
-                  itemBuilder: (context, index) {
-                    final remediesList =
+                : Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemCount:
                         model.filteredRemedies.isNotEmpty
-                            ? model.filteredRemedies
-                            : model.allRemediesFlat;
+                            ? model.filteredRemedies.length
+                            : model.allRemediesFlat.length,
+                    itemBuilder: (context, index) {
+                      final remediesList =
+                          model.filteredRemedies.isNotEmpty
+                              ? model.filteredRemedies
+                              : model.allRemediesFlat;
 
-                    final remedy = remediesList[index];
-                    final isSelected = model.selectedRemedies.contains(remedy);
+                      final remedy = remediesList[index];
+                      final isSelected = model.selectedRemedies.contains(
+                        remedy,
+                      );
 
-                    return GestureDetector(
-                      onTap: () {
-                        final remedy = remediesList[index];
-                        model.toggleRemedySelection(remedy);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isSelected ? Colors.amber : Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 4,
-                              offset: Offset(2, 4),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(remedy.image ?? ""),
-                              radius: 16,
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                remedy.name ?? "",
-                                style: TextStyle(
-                                  color: isSelected ? Colors.white : blackColor,
-                                  fontWeight: FontWeight.w500,
+                      return GestureDetector(
+                        onTap: () {
+                          final remedy = remediesList[index];
+                          model.toggleRemedySelection(remedy);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected ? Colors.amber : Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 4,
+                                offset: Offset(2, 4),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  remedy.image ?? "",
+                                ),
+                                radius: 16,
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  remedy.name ?? "",
+                                  style: TextStyle(
+                                    color:
+                                        isSelected ? Colors.white : blackColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Icon(
-                              Icons.add,
-                              color: isSelected ? Colors.white : Colors.amber,
-                            ),
-                          ],
+                              Icon(
+                                Icons.add,
+                                color: isSelected ? Colors.white : Colors.amber,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
           ],
         ),

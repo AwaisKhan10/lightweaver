@@ -11,7 +11,7 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
   final RemedyCategoryModel remedyCategoryModel;
   final bool isSelected;
   final VoidCallback onTap;
-  int? index;
+  final int index; // Now required and non-nullable
 
   CustomRemedyDetailsCardWidget({
     super.key,
@@ -23,35 +23,34 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final remedy = remedyCategoryModel.remedies?[index];
+
+    if (remedy == null) return const SizedBox.shrink(); // Prevent error
+
     return GestureDetector(
       onTap: onTap,
-
       child: Container(
         width: double.infinity,
-        margin: EdgeInsets.only(bottom: 16),
-        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.only(bottom: 16.h),
+        padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
               color: blackColor.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 10,
-              offset: Offset(0, 4),
+              offset: const Offset(0, 4),
             ),
           ],
           color: isSelected ? primaryColor : whiteColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage(
-                remedyCategoryModel.remedies![index!].image ??
-                    AppAssets().profile,
-              ),
+              radius: 30.r,
+              backgroundImage: AssetImage(remedy.image ?? AppAssets().profile),
             ),
             10.horizontalSpace,
             Expanded(
@@ -60,52 +59,55 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
                 children: [
                   16.verticalSpace,
                   Text(
-                    "${remedyCategoryModel.remedies![index!].name}",
+                    remedy.name ?? 'No Name',
                     style: style16B.copyWith(
                       color: isSelected ? whiteColor : primaryColor,
                     ),
                   ),
                   15.verticalSpace,
-                  Row(
-                    children: [
-                      Text(
-                        'for: ',
-                        style: style12.copyWith(
-                          color: isSelected ? whiteColor : darkGreyColor,
+                  if (remedy.forCondition != null &&
+                      remedy.forCondition!.isNotEmpty) ...[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'for: ',
+                          style: style12.copyWith(
+                            color: isSelected ? whiteColor : darkGreyColor,
+                          ),
                         ),
-                      ),
-                      ...remedyCategoryModel.remedies![index!].forCondition!
-                          .map(
-                            (use) => Text(
-                              " $use,",
-                              style: style14.copyWith(
-                                color: isSelected ? whiteColor : darkGreyColor,
-                              ),
+                        Expanded(
+                          child: Text(
+                            remedy.forCondition!.join(', '),
+                            style: style14.copyWith(
+                              color: isSelected ? whiteColor : darkGreyColor,
                             ),
                           ),
-                    ],
-                  ),
-                  5.verticalSpace,
-                  Wrap(
-                    children: [
-                      Text(
-                        'Key words:',
-                        style: style12.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: isSelected ? whiteColor : lightGreyColor2,
                         ),
-                      ),
-                      ...remedyCategoryModel.remedies![index!].keywords!.map(
-                        (keywords) => Text(
-                          " $keywords,",
+                      ],
+                    ),
+                    5.verticalSpace,
+                  ],
+                  if (remedy.keywords != null &&
+                      remedy.keywords!.isNotEmpty) ...[
+                    Wrap(
+                      children: [
+                        Text(
+                          'Key words:',
+                          style: style12.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: isSelected ? whiteColor : lightGreyColor2,
+                          ),
+                        ),
+                        Text(
+                          " ${remedy.keywords!.join(', ')}",
                           style: style14.copyWith(
                             color: isSelected ? whiteColor : lightGreyColor2,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-
+                      ],
+                    ),
+                  ],
                   TextButton(
                     onPressed: () {},
                     child: Text(
