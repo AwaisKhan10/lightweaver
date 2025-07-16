@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lightweaver/core/constants/colors.dart';
 import 'package:lightweaver/core/constants/app_assest.dart';
+import 'package:lightweaver/core/constants/text_style.dart';
 import 'package:lightweaver/core/enums/view_state_model.dart';
 import 'package:lightweaver/ui/my_client/my_client_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -378,7 +379,7 @@ class NewClientProfileScreen extends StatelessWidget {
         case "Gender":
           return "Male / Female / Other";
         case "Client Name":
-          return "Awais khan";
+          return "Jhonson";
         default:
           return label;
       }
@@ -400,6 +401,7 @@ class NewClientProfileScreen extends StatelessWidget {
             onChanged: onChanged,
             decoration: InputDecoration(
               hintText: getHintText(text),
+              hintStyle: style14.copyWith(color: hintTextColor),
 
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,

@@ -106,27 +106,6 @@ class RemedyFormulaDetailScreen extends StatelessWidget {
                               ],
                             ),
 
-                            (remedyDetailsModel!.symptoms?.isEmpty ?? true)
-                                ? SizedBox()
-                                : SizedBox(
-                                  height: 40,
-                                  child: ListView.builder(
-                                    // shrinkWrap: true,
-                                    itemCount:
-                                        remedyDetailsModel!.symptoms!.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return _customTabs(
-                                        index: 0,
-                                        model: model,
-                                        title:
-                                            '${remedyDetailsModel!.symptoms![index]}',
-                                        onTap: () {},
-                                      );
-                                    },
-                                  ),
-                                ),
-
                             firstTab(remedyDetailsModel!),
                           ],
                         ),
@@ -142,26 +121,52 @@ class RemedyFormulaDetailScreen extends StatelessWidget {
 ///
 firstTab(RemedyDetailsModel? remedyDetails) {
   return Padding(
-    padding: const EdgeInsets.all(20.0),
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          '${remedyDetails!.name}' ?? "",
+          style: style18B.copyWith(color: primaryColor),
+        ),
         20.verticalSpacingDiagonal,
-        Text('Start Formula', style: style14N.copyWith(color: primaryColor)),
-        20.verticalSpace,
+        Text('Start Formula', style: style14B.copyWith(color: primaryColor)),
+        10.verticalSpace,
         Text(
           textAlign: TextAlign.start,
           '${remedyDetails!.description}' ?? '',
           style: style12.copyWith(color: lightGreyColor),
         ),
         20.verticalSpace,
-        Text('Properties', style: style14.copyWith(color: blackColor)),
+
+        Text('Symptoms ', style: style14B.copyWith(color: primaryColor)),
+        10.verticalSpace,
+        (remedyDetails!.symptoms?.isEmpty ?? true)
+            ? SizedBox()
+            : _customTabs(
+              index: 0,
+
+              title: '${remedyDetails.symptoms}' ?? "",
+              onTap: () {},
+            ),
+        20.verticalSpace,
+        Wrap(
+          children: [
+            Text('Created By: ', style: style14B.copyWith(color: primaryColor)),
+            Text(
+              ' ${remedyDetails!.createdBy ?? ""}',
+              style: style14.copyWith(color: blackColor),
+            ),
+          ],
+        ),
+        20.verticalSpace,
+        Text('Properties', style: style14B.copyWith(color: primaryColor)),
         10.verticalSpace,
         (remedyDetails.properties?.isEmpty ?? true)
             ? SizedBox()
             : SizedBox(
-              height: 40,
+              height: 50,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
@@ -178,13 +183,13 @@ firstTab(RemedyDetailsModel? remedyDetails) {
         20.verticalSpace,
         Text(
           'Associated Chakras',
-          style: style14.copyWith(color: primaryColor),
+          style: style14B.copyWith(color: primaryColor),
         ),
-        20.verticalSpace,
+        10.verticalSpace,
         (remedyDetails.chakras?.isEmpty ?? true)
             ? SizedBox()
             : SizedBox(
-              height: 40,
+              height: 50,
               child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -200,27 +205,48 @@ firstTab(RemedyDetailsModel? remedyDetails) {
 
         20.verticalSpace,
 
+        // Text('KeyWords ', style: style14B.copyWith(color: primaryColor)),
+        if (remedyDetails.keywords != null &&
+            remedyDetails.keywords!.isNotEmpty) ...[
+          Wrap(
+            children: [
+              Text(
+                'Key words:',
+                style: style14B.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: primaryColor,
+                ),
+              ),
+              Text(
+                " ${remedyDetails.keywords!.join(', ')}",
+                style: style14.copyWith(color: blackColor),
+              ),
+            ],
+          ),
+        ],
+        30.verticalSpace,
+
         ///
         ///      related remedies section
         ///
-        Text('Related Remedies', style: style14.copyWith(color: primaryColor)),
+        // Text('Related Remedies', style: style14.copyWith(color: primaryColor)),
 
-        (remedyDetails.related?.isEmpty ?? true)
-            ? SizedBox()
-            : SizedBox(
-              height: 60,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: remedyDetails.related!.length,
-                itemBuilder: (context, index) {
-                  return _relatedRemedies(
-                    AppAssets().profile,
-                    '${remedyDetails.related![index]}',
-                  );
-                },
-              ),
-            ),
+        // (remedyDetails.related?.isEmpty ?? true)
+        //     ? SizedBox()
+        //     : SizedBox(
+        //       height: 60,
+        //       child: ListView.builder(
+        //         scrollDirection: Axis.horizontal,
+        //         shrinkWrap: true,
+        //         itemCount: remedyDetails.related!.length,
+        //         itemBuilder: (context, index) {
+        //           return _relatedRemedies(
+        //             AppAssets().profile,
+        //             '${remedyDetails.related![index]}',
+        //           );
+        //         },
+        //       ),
+        //     ),
       ],
     ),
   );
@@ -232,8 +258,8 @@ firstTab(RemedyDetailsModel? remedyDetails) {
 Container _associatedChakras(String title, Color backgroundColor) {
   return Container(
     alignment: Alignment.center,
-    margin: EdgeInsets.only(left: 10),
-    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+    margin: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
     decoration: BoxDecoration(
       color: backgroundColor,
       borderRadius: BorderRadius.circular(30),
@@ -242,74 +268,51 @@ Container _associatedChakras(String title, Color backgroundColor) {
   );
 }
 
-///
-///   related remedies
-///
-Container _relatedRemedies(String imageUrl, String title) {
-  return Container(
-    margin: EdgeInsets.all(10),
-    alignment: Alignment.centerLeft,
+// ///
+// ///   related remedies
+// ///
+// Container _relatedRemedies(String imageUrl, String title) {
+//   return Container(
+//     margin: EdgeInsets.all(10),
+//     alignment: Alignment.centerLeft,
 
-    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(9999),
-      color: whiteColor,
-      boxShadow: [
-        BoxShadow(
-          blurRadius: 10,
-          spreadRadius: 2,
-          offset: Offset(0, 1),
-          color: Color(0xffAFAFAF).withOpacity(0.25),
-        ),
-      ],
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CircleAvatar(
-          backgroundColor: whiteColor,
-          radius: 10.r,
-          backgroundImage: AssetImage(imageUrl),
-        ),
-        4.horizontalSpace,
-        Text(title, style: style12),
-      ],
-    ),
-  );
-}
+//     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+//     decoration: BoxDecoration(
+//       borderRadius: BorderRadius.circular(9999),
+//       color: whiteColor,
+//       boxShadow: [
+//         BoxShadow(
+//           blurRadius: 10,
+//           spreadRadius: 2,
+//           offset: Offset(0, 1),
+//           color: Color(0xffAFAFAF).withOpacity(0.25),
+//         ),
+//       ],
+//     ),
+//     child: Row(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         CircleAvatar(
+//           backgroundColor: whiteColor,
+//           radius: 10.r,
+//           backgroundImage: AssetImage(imageUrl),
+//         ),
+//         4.horizontalSpace,
+//         Text(title, style: style12),
+//       ],
+//     ),
+//   );
+// }
 
 ///
 ///    top tab item
 ///
 Widget _customTabs({
   required int index,
-  required RemedyDetailsViewModel model,
 
   required String title,
   required final VoidCallback onTap,
 }) {
-  final bool isSelected = model.selectedTabIndex == index;
-
-  return GestureDetector(
-    onTap: onTap,
-
-    child: Container(
-      margin: EdgeInsets.only(left: 10),
-      alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            spreadRadius: 2,
-            blurRadius: 10,
-            color: blackColor.withOpacity(0.2),
-          ),
-        ],
-        color: isSelected ? primaryColor : whiteColor,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Text("$title" ?? "", style: style14.copyWith(color: whiteColor)),
-    ),
-  );
+  return Text("$title" ?? "", style: style14.copyWith(color: blackColor));
 }

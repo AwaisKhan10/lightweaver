@@ -221,12 +221,16 @@ class FormulaHistoryScreen extends StatelessWidget {
                                             radius: 16,
                                           ),
                                           SizedBox(width: 10),
-                                          Text(
-                                            "${formulaData![this.index].remedies![remedyIndex].name}" ??
-                                                "",
-                                            style: TextStyle(
-                                              color: blackColor,
-                                              fontWeight: FontWeight.w500,
+                                          Flexible(
+                                            child: Text(
+                                              "${formulaData![this.index].remedies![remedyIndex].name}" ??
+                                                  "",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                color: blackColor,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
                                         ],

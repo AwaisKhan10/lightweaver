@@ -62,13 +62,13 @@ class SettingScreen extends StatelessWidget {
                               text: 'Profile',
                               index: 0,
                             ),
-                            _settingContainer(
-                              context: context,
-                              icon: AppAssets().email,
-                              icon1: AppAssets().email1,
-                              text: 'Email Templates',
-                              index: 1,
-                            ),
+                            // _settingContainer(
+                            //   context: context,
+                            //   icon: AppAssets().email,
+                            //   icon1: AppAssets().email1,
+                            //   text: 'Email Templates',
+                            //   index: 1,
+                            // ),
                             _settingContainer(
                               context: context,
                               icon: AppAssets().reminder,
@@ -76,13 +76,13 @@ class SettingScreen extends StatelessWidget {
                               text: 'Reminder Settings',
                               index: 2,
                             ),
-                            _settingContainer(
-                              context: context,
-                              icon: AppAssets().cloud,
-                              icon1: AppAssets().cloud1,
-                              text: 'Cloud Sync',
-                              index: 3,
-                            ),
+                            // _settingContainer(
+                            //   context: context,
+                            //   icon: AppAssets().cloud,
+                            //   icon1: AppAssets().cloud1,
+                            //   text: 'Cloud Sync',
+                            //   index: 3,
+                            // ),
                             _settingContainer(
                               context: context,
                               icon: AppAssets().appearance,
@@ -90,13 +90,13 @@ class SettingScreen extends StatelessWidget {
                               text: 'Appearance',
                               index: 4,
                             ),
-                            _settingContainer(
-                              context: context,
-                              icon: AppAssets().export,
-                              icon1: AppAssets().export1,
-                              text: 'Export Data',
-                              index: 5,
-                            ),
+                            // _settingContainer(
+                            //   context: context,
+                            //   icon: AppAssets().export,
+                            //   icon1: AppAssets().export1,
+                            //   text: 'Export Data',
+                            //   index: 5,
+                            // ),
                             _settingContainer(
                               context: context,
                               icon: AppAssets().help,
