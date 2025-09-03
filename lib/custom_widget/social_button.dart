@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lightweaver/core/constants/colors.dart';
+import 'package:lightweaver/core/constants/text_style.dart';
 
 class CustomSocialButton extends StatelessWidget {
   final String imagePath;
@@ -17,12 +18,20 @@ class CustomSocialButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 44.h,
-        width: 80.w,
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: blackColor),
         ),
-        child: Center(child: Image.asset(imagePath, scale: 4)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Continue with Google", style: style16B),
+            20.horizontalSpace,
+            Image.asset(imagePath, scale: 4),
+          ],
+        ),
       ),
     );
   }

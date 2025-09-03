@@ -46,6 +46,7 @@ class MyClientScreen extends StatelessWidget {
                         child: Image.asset(
                           AppAssets().notificationIcon,
                           scale: 4,
+                          color: primaryColor,
                         ),
                       ),
                     ),

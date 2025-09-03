@@ -41,7 +41,7 @@ class EmailTemplateScreen extends StatelessWidget {
                             },
                             child: Icon(
                               Icons.arrow_back,
-                              color: Colors.orange,
+                              color: primaryColor,
                               size: 30,
                             ),
                           ),

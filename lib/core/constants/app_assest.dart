@@ -44,8 +44,8 @@ class AppAssets {
   //*********************************** *//
   String signIn = "$staticAssets/signIn.png";
   String signUp = "$staticAssets/signUp.png";
-  String appleIcon = "$iconsAssets/appleIcon.png";
-  String facebookIcon = "$iconsAssets/facebookIcon.png";
+  // String appleIcon = "$iconsAssets/appleIcon.png";
+  // String facebookIcon = "$iconsAssets/facebookIcon.png";
   String googleIcon = "$iconsAssets/googleIcon.png";
   String keyIcon = "$iconsAssets/keyIcon.png";
   String phoneIcon = "$iconsAssets/phoneIcon.png";

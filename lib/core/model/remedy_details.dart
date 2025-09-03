@@ -3,6 +3,7 @@ class RemedyDetailsModel {
   String? description;
   List<String>? symptoms;
   String? image;
+  String? imageUrl;
   List<String>? keywords;
   List<String>? related;
   List<String>? forCondition;
@@ -11,7 +12,7 @@ class RemedyDetailsModel {
   List<String>? chakras;
   String? element;
   String? createdBy;
-
+  String? accupuncture;
   RemedyDetailsModel({
     this.name,
     this.description,
@@ -25,6 +26,8 @@ class RemedyDetailsModel {
     this.chakras,
     this.element,
     this.createdBy,
+    this.imageUrl,
+    this.accupuncture,
   });
 
   factory RemedyDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -41,6 +44,8 @@ class RemedyDetailsModel {
       chakras: _parseStringOrList(json['chakras']),
       element: json['element'] as String?,
       createdBy: json['createdBy'] as String?,
+      imageUrl: json['imageUrl'] as String?,
+      accupuncture: json['accupuncture'] as String?,
     );
   }
 
@@ -58,6 +63,8 @@ class RemedyDetailsModel {
       'chakras': chakras,
       'element': element,
       'createdBy': createdBy,
+      'imageUrl': imageUrl,
+      'accupuncture': accupuncture,
     };
   }
 

@@ -32,7 +32,7 @@ class ReminderScreen extends StatelessWidget {
                         onTap: () => Get.back(),
                         child: Icon(
                           Icons.arrow_back,
-                          color: Colors.orange,
+                          color: primaryColor,
                           size: 30,
                         ),
                       ),

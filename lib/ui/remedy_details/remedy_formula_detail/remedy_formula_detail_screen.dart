@@ -13,6 +13,7 @@ import 'package:lightweaver/ui/remedy_details/remedy_details_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RemedyFormulaDetailScreen extends StatelessWidget {
   final RemedyDetailsModel? remedyDetailsModel;
@@ -85,6 +86,7 @@ class RemedyFormulaDetailScreen extends StatelessWidget {
                                     child: Image.asset(
                                       AppAssets().notificationIcon,
                                       scale: 4,
+                                      color: primaryColor,
                                     ),
                                   ),
                                 ),
@@ -126,9 +128,25 @@ firstTab(RemedyDetailsModel? remedyDetails) {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '${remedyDetails!.name}' ?? "",
-          style: style18B.copyWith(color: primaryColor),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
+                '${remedyDetails!.name}' ?? "",
+                style: style18B.copyWith(color: primaryColor),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+            ),
+
+            CircleAvatar(
+              radius: 80.r,
+              backgroundColor: primaryColor,
+              backgroundImage: NetworkImage(remedyDetails.imageUrl ?? ""),
+            ),
+          ],
         ),
         20.verticalSpacingDiagonal,
         Text('Start Formula', style: style14B.copyWith(color: primaryColor)),
@@ -140,7 +158,53 @@ firstTab(RemedyDetailsModel? remedyDetails) {
         ),
         20.verticalSpace,
 
-        Text('Symptoms ', style: style14B.copyWith(color: primaryColor)),
+        remedyDetails.image != null && remedyDetails.image!.isNotEmpty
+            ? ClipRRect(
+              borderRadius: BorderRadiusGeometry.circular(20),
+              child: Image.network(
+                remedyDetails.image!,
+                fit: BoxFit.cover,
+                height: 400,
+                width: double.infinity,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      height: 400,
+                      width: double.infinity,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Center(child: Icon(Icons.image, size: 40));
+                },
+              ),
+            )
+            : Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                height: 300,
+                width: double.infinity,
+                color: Colors.white,
+              ),
+            ),
+
+        20.verticalSpace,
+        Text('Acupuncture ', style: style14B.copyWith(color: primaryColor)),
+        10.verticalSpace,
+        Text(
+          remedyDetails.accupuncture ?? '',
+          style: style12.copyWith(color: blackColor),
+          textAlign:
+              TextAlign.justify, // optional: for neat paragraph formatting
+        ),
+
+        20.verticalSpace,
+        Text('Dosage ', style: style14B.copyWith(color: primaryColor)),
         10.verticalSpace,
         (remedyDetails!.symptoms?.isEmpty ?? true)
             ? SizedBox()
@@ -181,10 +245,7 @@ firstTab(RemedyDetailsModel? remedyDetails) {
             ),
 
         20.verticalSpace,
-        Text(
-          'Associated Chakras',
-          style: style14B.copyWith(color: primaryColor),
-        ),
+        Text('GemElixirs', style: style14B.copyWith(color: primaryColor)),
         10.verticalSpace,
         (remedyDetails.chakras?.isEmpty ?? true)
             ? SizedBox()

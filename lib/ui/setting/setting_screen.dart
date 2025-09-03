@@ -180,7 +180,11 @@ class SettingScreen extends StatelessWidget {
               ),
             ),
             20.horizontalSpace,
-            Image.asset(isSelected ? icon1 : icon, scale: 4),
+            Image.asset(
+              isSelected ? icon1 : icon,
+              scale: 4,
+              color: isSelected ? primaryColor : Colors.transparent,
+            ),
             10.horizontalSpace,
             Text(
               text,

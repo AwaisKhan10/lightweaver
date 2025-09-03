@@ -36,7 +36,7 @@ class NewClientProfileScreen extends StatelessWidget {
                             onTap: () => Get.back(),
                             child: const Icon(
                               Icons.arrow_back,
-                              color: Colors.orange,
+                              color: primaryColor,
                               size: 30,
                             ),
                           ),
@@ -46,7 +46,7 @@ class NewClientProfileScreen extends StatelessWidget {
                           right: 16,
                           child: const Icon(
                             Icons.notifications,
-                            color: Colors.orange,
+                            color: primaryColor,
                             size: 30,
                           ),
                         ),
@@ -76,7 +76,7 @@ class NewClientProfileScreen extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.orange,
+                                      color: primaryColor,
                                     ),
                                   ),
                                   const SizedBox(height: 20),
@@ -119,7 +119,7 @@ class NewClientProfileScreen extends StatelessWidget {
                                               radius: 14,
                                               child: Icon(
                                                 Icons.edit,
-                                                color: Colors.orange,
+                                                color: primaryColor,
                                                 size: 18,
                                               ),
                                             ),

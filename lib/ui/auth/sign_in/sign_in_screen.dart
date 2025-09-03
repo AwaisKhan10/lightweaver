@@ -136,6 +136,7 @@ class SignInScreen extends StatelessWidget {
                                                 hintText: 'Enter Phone Number',
                                                 prefixIcon: Image.asset(
                                                   AppAssets().phoneIcon,
+                                                  color: primaryColor,
                                                   scale: 4,
                                                 ),
                                               ),
@@ -167,6 +168,7 @@ class SignInScreen extends StatelessWidget {
                                             prefixIcon: Image.asset(
                                               AppAssets().keyIcon,
                                               scale: 4,
+                                              color: primaryColor,
                                             ),
                                             suffixIcon: GestureDetector(
                                               onTap:
@@ -256,46 +258,36 @@ class SignInScreen extends StatelessWidget {
                                           ],
                                         ),
                                         30.verticalSpace,
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'Continue with',
-                                            style: style16.copyWith(
-                                              color: blackColor,
-                                            ),
-                                          ),
+
+                                        CustomSocialButton(
+                                          onTap:
+                                              () => model.userLoginWithGoogle(),
+                                          imagePath: AppAssets().googleIcon,
                                         ),
-                                        20.verticalSpace,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            CustomSocialButton(
-                                              onTap:
-                                                  () =>
-                                                      model.userFacebookLogin
-                                                      (),
-                                              imagePath:
-                                                  AppAssets().facebookIcon,
-                                            ),
-                                            10.horizontalSpace,
-                                            CustomSocialButton(
-                                              onTap:
-                                                  () =>
-                                                      model
-                                                          .userLoginWithGoogle(),
-                                              imagePath: AppAssets().googleIcon,
-                                            ),
-                                            10.horizontalSpace,
-                                            CustomSocialButton(
-                                              onTap:
-                                                  () => print(
-                                                    'Apple signUp in Progress',
-                                                  ),
-                                              imagePath: AppAssets().appleIcon,
-                                            ),
-                                          ],
-                                        ),
+                                        // Row(
+                                        //   mainAxisAlignment:
+                                        //       MainAxisAlignment.center,
+                                        //   children: [
+                                        //     // CustomSocialButton(
+                                        //     //   onTap:
+                                        //     //       () =>
+                                        //     //           model.userFacebookLogin
+                                        //     //           (),
+                                        //     //   imagePath:
+                                        //     //       AppAssets().facebookIcon,
+                                        //     // ),
+                                        //     10.horizontalSpace,
+
+                                        //     10.horizontalSpace,
+                                        //     // CustomSocialButton(
+                                        //     //   onTap:
+                                        //     //       () => print(
+                                        //     //         'Apple signUp in Progress',
+                                        //     //       ),
+                                        //     //   imagePath: AppAssets().appleIcon,
+                                        //     // ),
+                                        //   ],
+                                        // ),
                                         20.verticalSpace,
                                       ],
                                     ),

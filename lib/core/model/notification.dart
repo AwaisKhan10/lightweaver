@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lightweaver/core/constants/colors.dart';
 
 class NotificationModel {
   final String title;
@@ -42,7 +43,7 @@ class NotificationModel {
       case 'admin':
         return Colors.blue;
       case 'system':
-        return Colors.orange;
+        return primaryColor;
       case 'user':
         return Colors.green;
       case 'offer':

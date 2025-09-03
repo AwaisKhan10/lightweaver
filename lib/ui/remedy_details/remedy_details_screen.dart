@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors
+// ignore_for_file: use_key_in_widget_constructors, sized_box_for_whitespace
 
 import 'dart:developer';
 
@@ -12,10 +12,11 @@ import 'package:lightweaver/core/constants/text_style.dart';
 import 'package:lightweaver/core/enums/view_state_model.dart';
 import 'package:lightweaver/core/model/remedies_categories.dart';
 import 'package:lightweaver/custom_widget/remedy_details.dart';
+import 'package:lightweaver/custom_widget/shimmers/custom_card_shimmer_loader.dart';
+import 'package:lightweaver/custom_widget/shimmers/tabs_shimmer.dart';
 import 'package:lightweaver/ui/notifications/notification_screen.dart';
 import 'package:lightweaver/ui/remedy_details/remedy_details_view_model.dart';
 import 'package:lightweaver/ui/remedy_details/remedy_formula_detail/remedy_formula_detail_screen.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 class RemedyDetailsScreen extends StatelessWidget {
@@ -23,8 +24,10 @@ class RemedyDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RemedyDetailsViewModel>(
       builder:
-          (context, model, child) => ModalProgressHUD(
-            inAsyncCall: model.state == ViewState.busy,
+          (context, model, child) => RefreshIndicator(
+            onRefresh: () async {
+              await model.getRemedies();
+            },
             child: Scaffold(
               body: SingleChildScrollView(
                 child: Column(
@@ -44,6 +47,7 @@ class RemedyDetailsScreen extends StatelessWidget {
                             child: Image.asset(
                               AppAssets().notificationIcon,
                               scale: 4,
+                              color: primaryColor,
                             ),
                           ),
                         ),
@@ -80,7 +84,11 @@ class RemedyDetailsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        model.remedyList.isEmpty && model.remedyList == null
+
+                        model.state == ViewState.busy
+                            ? shimmerTabListView()
+                            : model.remedyList.isEmpty &&
+                                model.remedyList == null
                             ? Center(
                               child: Text(
                                 "There is no Remedy Details",
@@ -130,8 +138,11 @@ class RemedyDetailsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             10.verticalSpace,
-                            model.filteredRemedies == null
-                                ? Text("data is empty")
+                            model.state == ViewState.busy
+                                ? CustomRemedyDetailsShimmerList()
+                                : model.filteredRemedies == null ||
+                                    model.filteredRemedies.isEmpty
+                                ? Text("There is no Remedy Data")
                                 : ListView.builder(
                                   itemCount: model.filteredRemedies.length,
                                   shrinkWrap: true,

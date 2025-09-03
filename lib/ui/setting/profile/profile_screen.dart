@@ -43,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
                               },
                               child: Icon(
                                 Icons.arrow_back,
-                                color: Colors.orange,
+                                color: primaryColor,
                                 size: 30,
                               ),
                             ),
@@ -92,7 +92,7 @@ class ProfileScreen extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.orange,
+                                        color: primaryColor,
                                       ),
                                     ),
                                     const SizedBox(height: 20),

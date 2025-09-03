@@ -50,6 +50,7 @@ class MyFormulaDetailsScreen extends StatelessWidget {
                               child: Image.asset(
                                 AppAssets().notificationIcon,
                                 scale: 4,
+                                color: primaryColor,
                               ),
                             ),
                           ),
@@ -170,9 +171,7 @@ class MyFormulaDetailsScreen extends StatelessWidget {
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Color(
-                                                0xFFF4B400,
-                                              ), // Amber yellow
+                                              color: primaryColor,
                                             ),
                                           ),
                                           Spacer(),
@@ -187,7 +186,7 @@ class MyFormulaDetailsScreen extends StatelessWidget {
                                             },
                                             icon: Icon(
                                               Icons.remove_red_eye,
-                                              color: Color(0xFFF4B400),
+                                              color: primaryColor,
                                             ),
                                             label: Text(
                                               "View",

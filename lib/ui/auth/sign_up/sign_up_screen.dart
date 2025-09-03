@@ -205,6 +205,7 @@ class SignUpScreen extends StatelessWidget {
                                             prefixIcon: Image.asset(
                                               AppAssets().keyIcon,
                                               scale: 4,
+                                              color: primaryColor,
                                             ),
                                             suffixIcon: GestureDetector(
                                               onTap:

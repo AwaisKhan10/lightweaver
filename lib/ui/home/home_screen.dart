@@ -7,6 +7,7 @@ import 'package:lightweaver/core/constants/app_assest.dart';
 import 'package:lightweaver/core/constants/auth_text_feild.dart';
 import 'package:lightweaver/core/constants/colors.dart';
 import 'package:lightweaver/core/constants/text_style.dart';
+import 'package:lightweaver/ui/body_part/body_part.dart';
 import 'package:lightweaver/ui/home/home_view_model.dart';
 import 'package:lightweaver/ui/my_formulas/myformula_detail/my_formula_details_screen.dart';
 import 'package:lightweaver/ui/notifications/notification_screen.dart';
@@ -42,6 +43,7 @@ class HomeScreen extends StatelessWidget {
                             child: Image.asset(
                               AppAssets().notificationIcon,
                               scale: 4,
+                              color: primaryColor,
                             ),
                           ),
                         ),
@@ -182,13 +184,22 @@ class HomeScreen extends StatelessWidget {
                   imageUrl: AppAssets().formulaIcon,
                   title: 'Start Library',
                 ),
-
+                20.verticalSpace,
+                _CustomQuickLInksItem(
+                  onTap: () {
+                    Get.to(ImageGalleryScreen());
+                  },
+                  index: 2,
+                  model: model,
+                  imageUrl: AppAssets().bookIcon,
+                  title: 'Body Maps',
+                ),
                 20.verticalSpace,
                 _CustomQuickLInksItem(
                   onTap: () {
                     Get.offAll(RootScreen(selectedScreen: 1));
                   },
-                  index: 2,
+                  index: 3,
                   model: model,
                   imageUrl: AppAssets().newClient,
                   title: 'My Client',
@@ -199,7 +210,7 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     Get.offAll(RootScreen(selectedScreen: 3));
                   },
-                  index: 3,
+                  index: 4,
                   model: model,
                   imageUrl: AppAssets().notificationIcon,
                   title: 'Recent Notification',
@@ -266,4 +277,62 @@ Widget _CustomQuickLInksItem({
       ),
     ),
   );
+}
+
+class CustomDropdownField extends StatelessWidget {
+  final String hint;
+  final String? value;
+  final List<String> items;
+  final ValueChanged<String?> onChanged;
+
+  const CustomDropdownField({
+    super.key,
+    required this.hint,
+    this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300, width: 1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: value,
+                hint: Text(hint, style: const TextStyle(color: Colors.grey)),
+                icon: const SizedBox.shrink(), // Hide default icon
+                items:
+                    items
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                          ),
+                        )
+                        .toList(),
+                onChanged: onChanged,
+              ),
+            ),
+          ),
+          const VerticalDivider(color: Colors.grey, thickness: 1, width: 20),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Icon(Icons.keyboard_arrow_up, size: 18, color: Colors.grey),
+              Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -333,7 +333,7 @@ class MyFormulasScreen extends StatelessWidget {
                             vertical: 10,
                           ),
                           decoration: BoxDecoration(
-                            color: isSelected ? Colors.amber : Colors.white,
+                            color: isSelected ? primaryColor : Colors.white,
                             borderRadius: BorderRadius.circular(30),
                             boxShadow: [
                               BoxShadow(
@@ -346,6 +346,7 @@ class MyFormulasScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               CircleAvatar(
+                                backgroundColor: primaryColor,
                                 backgroundImage: NetworkImage(
                                   remedy.image ?? "",
                                 ),
@@ -364,7 +365,7 @@ class MyFormulasScreen extends StatelessWidget {
                               ),
                               Icon(
                                 Icons.add,
-                                color: isSelected ? Colors.white : Colors.amber,
+                                color: isSelected ? Colors.white : primaryColor,
                               ),
                             ],
                           ),

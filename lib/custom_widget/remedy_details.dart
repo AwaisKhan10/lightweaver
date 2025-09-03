@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lightweaver/core/constants/app_assest.dart';
 import 'package:lightweaver/core/constants/colors.dart';
 import 'package:lightweaver/core/constants/text_style.dart';
 import 'package:lightweaver/core/model/remedies_categories.dart';
@@ -50,7 +49,8 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 30.r,
-              backgroundImage: AssetImage(remedy.image ?? AppAssets().profile),
+              backgroundColor: primaryColor,
+              backgroundImage: NetworkImage(remedy.imageUrl ?? ""),
             ),
             10.horizontalSpace,
             Expanded(

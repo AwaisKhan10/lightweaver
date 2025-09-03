@@ -106,24 +106,17 @@ class DatabaseServices {
   }
 
   /// Fetch all remedy categories from Firestore
-  getRemedyCategories() async {
+  Future<List<RemedyCategoryModel>> getRemedyCategories() async {
     try {
       final snapshot = await _db.collection('remedy_categories').get();
 
-      print("lenght ${snapshot.docChanges.length}");
-
-      // Map each document to RemedyCategoryModel
       final categories =
           snapshot.docs.map((doc) {
             final data = doc.data();
-            data['id'] = doc.id; // Set document ID as id in model
-            print("data => ${data.toString()}");
+            data['id'] = doc.id;
             return RemedyCategoryModel.fromJson(data);
           }).toList();
-      print("categories ${categories.toList()}");
-      print(
-        "These are the remedies inside categories ====> ${categories[0].remedies!.length}",
-      );
+
       return categories;
     } catch (e, s) {
       debugPrint('Exception @getRemedyCategories: $e');

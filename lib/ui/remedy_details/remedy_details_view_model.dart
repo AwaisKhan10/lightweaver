@@ -26,34 +26,45 @@ class RemedyDetailsViewModel extends BaseViewModel {
   getRemedies() async {
     setState(ViewState.busy);
 
-    remedyList = await databaseServices.getRemedyCategories();
-    // remedyList = [
-    //   RemedyCategoryModel(
-    //     id: '1',
-    //     categoryName: 'Test Category',
-    //     remedies: [
-    //       RemedyDetailsModel(
-    //         name: 'Test Remedy',
-    //         image: AppAssets().profile,
-    //         forCondition: ['Stress'],
-    //         keywords: ['Calm'],
-    //       ),
-    //     ],
-    //   ),
-    // ];
-    print("remedyList length: ${remedyList.length}");
-    print("This is the length of remedies ${remedyList[0].remedies!.length}");
+    // Step 1: Get categories from DB
+    List<RemedyCategoryModel> rawCategories =
+        await databaseServices.getRemedyCategories();
+
+    // Step 2: Merge remedies by categoryName
+    Map<String, List<RemedyDetailsModel>> categoryMap = {};
+
+    for (var category in rawCategories) {
+      final name = category.categoryName?.trim() ?? 'Unknown';
+
+      if (!categoryMap.containsKey(name)) {
+        categoryMap[name] = [];
+      }
+
+      categoryMap[name]!.addAll(category.remedies ?? []);
+    }
+
+    // Step 3: Convert map to RemedyCategoryModel list
+    remedyList =
+        categoryMap.entries.map((entry) {
+          return RemedyCategoryModel(
+            id: entry.key, // you can keep unique or dummy id
+            categoryName: entry.key,
+            remedies: entry.value,
+          );
+        }).toList();
+
+    // Step 4: Create 'All' tab by combining all remedies
     List<RemedyDetailsModel> allRemedies =
-        remedyList
-            .expand((cat) => cat.remedies ?? [])
-            .cast<RemedyDetailsModel>()
-            .toList();
-    print("allRemedies length: ${allRemedies.length}");
+        (remedyList.expand(
+          (category) => category.remedies ?? [],
+        )).cast<RemedyDetailsModel>().toList();
+
     remedyList.insert(
       0,
       RemedyCategoryModel(id: '0', categoryName: 'All', remedies: allRemedies),
     );
 
+    // Step 5: Set filtered list for display
     selectedTabIndex = 0;
     filteredRemedies = allRemedies;
 
@@ -79,20 +90,20 @@ class RemedyDetailsViewModel extends BaseViewModel {
   Future<void> searchRemediesByName(String name) async {
     setState(ViewState.busy);
 
-    // Option 1: Search locally from already loaded remedies (faster)
-    if (name.isEmpty) {
-      filteredRemedies = remedyList[0].remedies ?? [];
-    } else {
-      final allRemedies = remedyList[0].remedies ?? [];
+    final query = name.toLowerCase().trim();
+    final allRemedies = remedyList[0].remedies ?? [];
 
+    if (query.isEmpty) {
+      filteredRemedies = allRemedies;
+    } else {
       filteredRemedies =
-          allRemedies
-              .where(
-                (remedy) =>
-                    remedy.name?.toLowerCase().contains(name.toLowerCase()) ??
-                    false,
-              )
-              .toList();
+          allRemedies.where((remedy) {
+            final remedyName = remedy.name?.toLowerCase() ?? '';
+            final keywords = remedy.keywords?.map((e) => e.toLowerCase()) ?? [];
+
+            return remedyName.contains(query) ||
+                keywords.any((keyword) => keyword.contains(query));
+          }).toList();
     }
 
     setState(ViewState.idle);

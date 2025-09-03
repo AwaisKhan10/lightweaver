@@ -44,7 +44,11 @@ class CustomBackgroundStack extends StatelessWidget {
             onTap: () {
               Get.to(NotificationScreen());
             },
-            child: Image.asset(AppAssets().notificationIcon, scale: 4),
+            child: Image.asset(
+              AppAssets().notificationIcon,
+              scale: 4,
+              color: primaryColor,
+            ),
           ),
         ),
         Positioned(
