@@ -7,7 +7,6 @@ import 'package:lightweaver/core/constants/colors.dart';
 import 'package:lightweaver/core/services/notification_services.dart';
 import 'package:lightweaver/firebase_option.dart';
 import 'package:lightweaver/locator.dart';
-import 'package:lightweaver/ui/admin_remdies_data.dart';
 import 'package:lightweaver/ui/my_client/my_client_view_model.dart';
 import 'package:lightweaver/ui/remedy_details/remedy_details_view_model.dart';
 import 'package:lightweaver/ui/setting/appearance/apperance_view_model.dart';
@@ -23,7 +22,7 @@ void main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => ApperanceViewModel(), // Handles theme loading
+      create: (_) => AppearanceViewModel(), // Handles theme loading
       child: const MyApp(),
     ),
   );
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => RemedyDetailsViewModel()),
             ChangeNotifierProvider(create: (_) => MyClientViewModel()),
           ],
-          child: Consumer<ApperanceViewModel>(
+          child: Consumer<AppearanceViewModel>(
             builder: (context, viewModel, _) {
               return GetMaterialApp(
                 debugShowCheckedModeBanner: false,

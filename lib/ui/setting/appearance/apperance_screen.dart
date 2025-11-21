@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 class ApperanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ApperanceViewModel>(
+    return Consumer<AppearanceViewModel>(
       builder:
           (context, model, child) => Scaffold(
             ///
