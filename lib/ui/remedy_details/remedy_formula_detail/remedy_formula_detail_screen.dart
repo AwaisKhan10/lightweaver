@@ -11,9 +11,7 @@ import 'package:lightweaver/core/model/remedy_details.dart';
 import 'package:lightweaver/ui/notifications/notification_screen.dart';
 import 'package:lightweaver/ui/remedy_details/remedy_details_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 class RemedyFormulaDetailScreen extends StatelessWidget {
   final RemedyDetailsModel? remedyDetailsModel;
@@ -130,17 +128,58 @@ firstTab(RemedyDetailsModel? remedyDetails) {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(
-                '${remedyDetails!.name}' ?? "",
-                style: style18B.copyWith(color: primaryColor),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${remedyDetails!.name}' ?? "",
+                    style: style18B.copyWith(color: primaryColor),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  20.verticalSpacingDiagonal,
+
+                  remedyDetails.botanicalName!.isNotEmpty
+                      ?
+                      /// Botanical Name
+                      Text(
+                        'Botanical Name',
+                        style: style16B.copyWith(color: primaryColor),
+                      )
+                      : SizedBox(),
+                  5.verticalSpace,
+
+                  remedyDetails.botanicalName!.isNotEmpty
+                      ? Text(remedyDetails.botanicalName ?? "-", style: style12)
+                      : SizedBox(),
+                  remedyDetails.elementalLightCode!.isEmpty
+                      ? 20.verticalSpace
+                      : SizedBox(),
+
+                  remedyDetails.elementalLightCode!.isNotEmpty
+                      ?
+                      /// Elemental Light Code
+                      Text(
+                        'Elemental Light Code',
+                        style: style16B.copyWith(color: primaryColor),
+                      )
+                      : SizedBox(),
+                  remedyDetails.elementalLightCode!.isNotEmpty
+                      ? 5.verticalSpace
+                      : SizedBox(),
+                  remedyDetails.elementalLightCode!.isNotEmpty
+                      ? Text(remedyDetails.elementalLightCode ?? "-")
+                      : SizedBox(),
+                  remedyDetails.elementalLightCode!.isEmpty
+                      ? 20.verticalSpace
+                      : SizedBox(),
+                ],
               ),
             ),
-
             CircleAvatar(
               radius: 80.r,
               backgroundColor: primaryColor,
@@ -148,144 +187,296 @@ firstTab(RemedyDetailsModel? remedyDetails) {
             ),
           ],
         ),
-        20.verticalSpacingDiagonal,
-        Text('Start Formula', style: style14B.copyWith(color: primaryColor)),
-        10.verticalSpace,
-        Text(
-          textAlign: TextAlign.start,
-          '${remedyDetails!.description}' ?? '',
-          style: style12.copyWith(color: lightGreyColor),
-        ),
-        20.verticalSpace,
 
-        remedyDetails.image != null && remedyDetails.image!.isNotEmpty
-            ? ClipRRect(
-              borderRadius: BorderRadiusGeometry.circular(20),
-              child: Image.network(
-                remedyDetails.image!,
-                fit: BoxFit.cover,
-                height: 400,
-                width: double.infinity,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      height: 400,
-                      width: double.infinity,
-                      color: Colors.white,
-                    ),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return Center(child: Icon(Icons.image, size: 40));
-                },
-              ),
-            )
-            : Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              child: Container(
-                height: 300,
-                width: double.infinity,
-                color: Colors.white,
-              ),
+        /// Spiritual Themes
+        Text('Spiritual Themes', style: style16B.copyWith(color: primaryColor)),
+        5.verticalSpace, Text(remedyDetails.spiritualThemes ?? "-"),
+        16.verticalSpace,
+
+        /// Recommended For
+        Text('Recommended For', style: style16B.copyWith(color: primaryColor)),
+        5.verticalSpace,
+        (remedyDetails.recommendedFor?.isEmpty ?? true)
+            ? Text("-")
+            : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children:
+                  remedyDetails.recommendedFor!.map((item) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("• ", style: style14.copyWith(color: blackColor)),
+                        Expanded(
+                          child: Text(
+                            item,
+                            style: style14.copyWith(color: blackColor),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+            ),
+
+        /// Complementary Essences
+        Text(
+          'Complementary Essences',
+          style: style16B.copyWith(color: primaryColor),
+        ),
+        5.verticalSpace,
+        (remedyDetails.complementaryEssences?.isEmpty ?? true)
+            ? Text("-")
+            : Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children:
+                  remedyDetails.complementaryEssences!.map((item) {
+                    return Chip(
+                      label: Text(item),
+                      backgroundColor: Colors.grey.shade200,
+                    );
+                  }).toList(),
             ),
 
         20.verticalSpace,
-        Text('Acupuncture ', style: style14B.copyWith(color: primaryColor)),
-        10.verticalSpace,
-        Text(
-          remedyDetails.accupuncture ?? '',
-          style: style12.copyWith(color: blackColor),
-          textAlign:
-              TextAlign.justify, // optional: for neat paragraph formatting
-        ),
 
-        20.verticalSpace,
-        Text('Dosage ', style: style14B.copyWith(color: primaryColor)),
-        10.verticalSpace,
-        (remedyDetails!.symptoms?.isEmpty ?? true)
-            ? SizedBox()
-            : _customTabs(
-              index: 0,
+        /// Usage/Dosage
+        Text('Usage/Dosage', style: style16B.copyWith(color: primaryColor)),
+        5.verticalSpace,
+        Text(remedyDetails.usageDosage ?? "-"),
+        16.verticalSpace,
 
-              title: '${remedyDetails.symptoms}' ?? "",
-              onTap: () {},
-            ),
-        20.verticalSpace,
-        Wrap(
+        /// Acupuncture site
+        Text('Acupuncture site', style: style16B.copyWith(color: primaryColor)),
+        5.verticalSpace,
+        Text(remedyDetails.accupuncture ?? "-"),
+        16.verticalSpace,
+
+        /// Emotional/Physical/Mental
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Created By: ', style: style14B.copyWith(color: primaryColor)),
             Text(
-              ' ${remedyDetails!.createdBy ?? ""}',
-              style: style14.copyWith(color: blackColor),
+              'Emotional/Physical/Mental',
+              style: style16B.copyWith(color: primaryColor),
             ),
+            8.verticalSpace,
+            if (remedyDetails.emotionalIssues != null &&
+                remedyDetails.emotionalIssues!.isNotEmpty)
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Emotional Issues: ',
+                      style: style14.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: blackColor,
+                      ),
+                    ),
+                    TextSpan(
+                      text: remedyDetails.emotionalIssues!,
+                      style: style14.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: blackColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            if (remedyDetails.physicalStates != null &&
+                remedyDetails.physicalStates!.isNotEmpty) ...[
+              8.verticalSpace,
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Physical States/Energetic Influence: ',
+                      style: style14.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: blackColor,
+                      ),
+                    ),
+                    TextSpan(
+                      text: remedyDetails.physicalStates!,
+                      style: style14.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: blackColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            if (remedyDetails.mentalConditions != null &&
+                remedyDetails.mentalConditions!.isNotEmpty) ...[
+              8.verticalSpace,
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Mental/Spiritual Conditions: ',
+                      style: style14.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: blackColor,
+                      ),
+                    ),
+                    TextSpan(
+                      text: remedyDetails.mentalConditions!,
+                      style: style14.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: blackColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
-        20.verticalSpace,
-        Text('Properties', style: style14B.copyWith(color: primaryColor)),
-        10.verticalSpace,
-        (remedyDetails.properties?.isEmpty ?? true)
-            ? SizedBox()
-            : SizedBox(
-              height: 50,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: remedyDetails.properties!.length,
-                itemBuilder: (context, index) {
-                  return _associatedChakras(
-                    '${remedyDetails.properties![index]}',
-                    darkBlueColor,
-                  );
-                },
-              ),
-            ),
 
+        // 5.verticalSpace,
+        // Text(remedyDetails.emotionalPhysicalMental?.join(", ") ?? "-"),
         20.verticalSpace,
-        Text('GemElixirs', style: style14B.copyWith(color: primaryColor)),
-        10.verticalSpace,
-        (remedyDetails.chakras?.isEmpty ?? true)
-            ? SizedBox()
-            : SizedBox(
-              height: 50,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: remedyDetails.chakras!.length,
-                itemBuilder: (context, index) {
-                  return _associatedChakras(
-                    '${remedyDetails.chakras![index]}',
-                    darkPurpleColor,
-                  );
-                },
-              ),
-            ),
 
+        /// Topical / Beauty
+        Text('Topical / Beauty', style: style16B.copyWith(color: primaryColor)),
+        5.verticalSpace,
+        Text(remedyDetails.topicalBeauty ?? "-"),
         20.verticalSpace,
+        // Text('Start Formula', style: style14B.copyWith(color: primaryColor)),
+        // 10.verticalSpace,
+        // Text(
+        //   textAlign: TextAlign.start,
+        //   '${remedyDetails!.description}' ?? '',
+        //   style: style12.copyWith(color: lightGreyColor),
+        // ),
+        // 20.verticalSpace,
+
+        // remedyDetails.image != null && remedyDetails.image!.isNotEmpty
+        //     ? ClipRRect(
+        //       borderRadius: BorderRadiusGeometry.circular(20),
+        //       child: Image.network(
+        //         remedyDetails.image!,
+        //         fit: BoxFit.cover,
+        //         height: 400,
+        //         width: double.infinity,
+        //         loadingBuilder: (context, child, loadingProgress) {
+        //           if (loadingProgress == null) return child;
+        //           return Shimmer.fromColors(
+        //             baseColor: Colors.grey.shade300,
+        //             highlightColor: Colors.grey.shade100,
+        //             child: Container(
+        //               height: 400,
+        //               width: double.infinity,
+        //               color: Colors.white,
+        //             ),
+        //           );
+        //         },
+        //         errorBuilder: (context, error, stackTrace) {
+        //           return Center(child: Icon(Icons.image, size: 40));
+        //         },
+        //       ),
+        //     )
+        //     : Shimmer.fromColors(
+        //       baseColor: Colors.grey.shade300,
+        //       highlightColor: Colors.grey.shade100,
+        //       child: Container(
+        //         height: 300,
+        //         width: double.infinity,
+        //         color: Colors.white,
+        //       ),
+        //     ),
+
+        // 20.verticalSpace,
+        // Text('Acupuncture ', style: style14B.copyWith(color: primaryColor)),
+        // 10.verticalSpace,
+        // Text(
+        //   remedyDetails.accupuncture ?? '',
+        //   style: style12.copyWith(color: blackColor),
+        //   textAlign:
+        //       TextAlign.justify, // optional: for neat paragraph formatting
+        // ),
+
+        // 20.verticalSpace,
+        // Text('Dosage ', style: style14B.copyWith(color: primaryColor)),
+        // 10.verticalSpace,
+        // (remedyDetails!.symptoms?.isEmpty ?? true)
+        //     ? SizedBox()
+        //     : _customTabs(
+        //       index: 0,
+
+        //       title: '${remedyDetails.symptoms}' ?? "",
+        //       onTap: () {},
+        //     ),
+        // 20.verticalSpace,
+        // Wrap(
+        //   children: [
+        //     Text('Created By: ', style: style14B.copyWith(color: primaryColor)),
+        //     Text(
+        //       ' ${remedyDetails!.createdBy ?? ""}',
+        //       style: style14.copyWith(color: blackColor),
+        //     ),
+        //   ],
+        // ),
+        // 20.verticalSpace,
+        // Text('Properties', style: style14B.copyWith(color: primaryColor)),
+        // 10.verticalSpace,
+        // (remedyDetails.properties?.isEmpty ?? true)
+        //     ? SizedBox()
+        //     : SizedBox(
+        //       height: 50,
+        //       child: ListView.builder(
+        //         scrollDirection: Axis.horizontal,
+        //         shrinkWrap: true,
+        //         itemCount: remedyDetails.properties!.length,
+        //         itemBuilder: (context, index) {
+        //           return _associatedChakras(
+        //             '${remedyDetails.properties![index]}',
+        //             darkBlueColor,
+        //           );
+        //         },
+        //       ),
+        //     ),
+
+        // 20.verticalSpace,
+        // Text('GemElixirs', style: style14B.copyWith(color: primaryColor)),
+        // 10.verticalSpace,
+        // (remedyDetails.chakras?.isEmpty ?? true)
+        //     ? SizedBox()
+        //     : SizedBox(
+        //       height: 50,
+        //       child: ListView.builder(
+        //         shrinkWrap: true,
+        //         scrollDirection: Axis.horizontal,
+        //         itemCount: remedyDetails.chakras!.length,
+        //         itemBuilder: (context, index) {
+        //           return _associatedChakras(
+        //             '${remedyDetails.chakras![index]}',
+        //             darkPurpleColor,
+        //           );
+        //         },
+        //       ),
+        //     ),
+
+        // 20.verticalSpace,
 
         // Text('KeyWords ', style: style14B.copyWith(color: primaryColor)),
         if (remedyDetails.keywords != null &&
             remedyDetails.keywords!.isNotEmpty) ...[
-          Wrap(
-            children: [
-              Text(
-                'Key words:',
-                style: style14B.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: primaryColor,
-                ),
-              ),
-              Text(
-                " ${remedyDetails.keywords!.join(', ')}",
-                style: style14.copyWith(color: blackColor),
-              ),
-            ],
+          Text(
+            'Keywords:',
+            style: style16B.copyWith(
+              fontWeight: FontWeight.w500,
+              color: primaryColor,
+            ),
           ),
+          8.verticalSpace,
+          Text(
+            remedyDetails.keywords!.join(', '),
+            style: style14.copyWith(color: blackColor),
+          ),
+
+          90.verticalSpace,
         ],
-        30.verticalSpace,
 
         ///
         ///      related remedies section
@@ -310,22 +501,6 @@ firstTab(RemedyDetailsModel? remedyDetails) {
         //     ),
       ],
     ),
-  );
-}
-
-///
-///  associated charks  ///   also for properties section
-///
-Container _associatedChakras(String title, Color backgroundColor) {
-  return Container(
-    alignment: Alignment.center,
-    margin: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-    decoration: BoxDecoration(
-      color: backgroundColor,
-      borderRadius: BorderRadius.circular(30),
-    ),
-    child: Text(title, style: style12.copyWith(color: whiteColor)),
   );
 }
 
@@ -365,15 +540,3 @@ Container _associatedChakras(String title, Color backgroundColor) {
 //     ),
 //   );
 // }
-
-///
-///    top tab item
-///
-Widget _customTabs({
-  required int index,
-
-  required String title,
-  required final VoidCallback onTap,
-}) {
-  return Text("$title" ?? "", style: style14.copyWith(color: blackColor));
-}

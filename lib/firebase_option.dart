@@ -47,11 +47,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDco0pBLdP9cb5RUa63gmKYLnB1O45kBjk',
-    appId: '1:885115401948:android:fdad8c0169924a7eb1a619',
-    messagingSenderId: '885115401948',
-    projectId: 'lightweaver-6af9c',
-    storageBucket: 'lightweaver-6af9c.firebasestorage.app',
+    apiKey: "AIzaSyC4WH9yN_HOBBeG9A6EgP32vjHWF8wkLZ8",
+    authDomain: "lightweaver-6af9c.firebaseapp.com",
+    projectId: "lightweaver-6af9c",
+    storageBucket: "lightweaver-6af9c.firebasestorage.app",
+    messagingSenderId: "885115401948",
+    appId: "1:885115401948:web:5eae4b15d1e6e0dfb1a619",
+    measurementId: "G-DZG3YYC3VD",
 
     // measurementId: 'G-HYLR3KGRNY',
   );

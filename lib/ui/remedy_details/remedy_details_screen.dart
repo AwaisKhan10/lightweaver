@@ -1,7 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, sized_box_for_whitespace
 
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -61,7 +60,6 @@ class RemedyDetailsScreen extends StatelessWidget {
                         ),
 
                         Positioned(
-                          // bottom: 0,
                           top: 170,
                           right: 15, // Added right position
                           left: 15,

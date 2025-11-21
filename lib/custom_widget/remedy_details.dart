@@ -1,4 +1,6 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_const_constructors_in_immutables
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,7 +52,26 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
             CircleAvatar(
               radius: 30.r,
               backgroundColor: primaryColor,
-              backgroundImage: NetworkImage(remedy.imageUrl ?? ""),
+              backgroundImage:
+                  (remedy.imageUrl != null && remedy.imageUrl!.isNotEmpty)
+                      ? (remedy.imageUrl!.startsWith('data:image')
+                          ? MemoryImage(
+                            base64Decode(remedy.imageUrl!.split(',').last),
+                          )
+                          : (remedy.imageUrl!.startsWith('http') &&
+                              (remedy.imageUrl!.endsWith('.jpg') ||
+                                  remedy.imageUrl!.endsWith('.jpeg') ||
+                                  remedy.imageUrl!.endsWith('.png') ||
+                                  remedy.imageUrl!.endsWith('.webp')))
+                          ? NetworkImage(remedy.imageUrl!) as ImageProvider
+                          : null)
+                      : null,
+              child:
+                  (remedy.imageUrl == null ||
+                          remedy.imageUrl!.isEmpty ||
+                          remedy.imageUrl!.startsWith('http') == false)
+                      ? Icon(Icons.image, color: whiteColor)
+                      : null,
             ),
             10.horizontalSpace,
             Expanded(

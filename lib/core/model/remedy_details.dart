@@ -13,6 +13,21 @@ class RemedyDetailsModel {
   String? element;
   String? createdBy;
   String? accupuncture;
+
+  // Newly added fields
+  String? botanicalName;
+  String? elementalLightCode;
+  String? spiritualThemes;
+  List<String>? recommendedFor;
+  List<String>? complementaryEssences;
+  String? usageDosage;
+  String? topicalBeauty;
+
+  // Split emotional/physical/mental into three separate fields
+  String? emotionalIssues;
+  String? physicalStates;
+  String? mentalConditions;
+
   RemedyDetailsModel({
     this.name,
     this.description,
@@ -28,24 +43,48 @@ class RemedyDetailsModel {
     this.createdBy,
     this.imageUrl,
     this.accupuncture,
+    this.botanicalName,
+    this.elementalLightCode,
+    this.spiritualThemes,
+    this.recommendedFor,
+    this.complementaryEssences,
+    this.usageDosage,
+    this.topicalBeauty,
+    this.emotionalIssues,
+    this.physicalStates,
+    this.mentalConditions,
   });
 
   factory RemedyDetailsModel.fromJson(Map<String, dynamic> json) {
     return RemedyDetailsModel(
       name: json['name'] as String?,
       description: json['description'] as String?,
-      symptoms: _parseStringOrList(json['dosage']),
+      symptoms: _parseStringOrList(json['symptoms'] ?? json['dosage']),
       image: json['image'] as String?,
-      keywords: _parseStringOrList(json['keywords/Tags']),
+      keywords: _parseStringOrList(json['keywords'] ?? json['keywords/Tags']),
       related: _parseStringOrList(json['related']),
       forCondition: _parseStringOrList(json['for']),
       category: json['category'] as String?,
-      properties: _parseStringOrList(json['essences/properties']),
+      properties: _parseStringOrList(
+        json['properties'] ?? json['essences/properties'],
+      ),
       chakras: _parseStringOrList(json['chakras']),
       element: json['element'] as String?,
       createdBy: json['createdBy'] as String?,
       imageUrl: json['imageUrl'] as String?,
       accupuncture: json['accupuncture'] as String?,
+      botanicalName: json['botanicalName'] as String?,
+      elementalLightCode: json['elementalLightCode'] as String?,
+      spiritualThemes: json['spiritualThemes'] as String?,
+      recommendedFor: _parseStringOrList(json['recommendedFor']),
+      complementaryEssences: _parseStringOrList(json['complementaryEssences']),
+      usageDosage: json['usageDosage'] as String?,
+      topicalBeauty: json['topicalBeauty'] as String?,
+
+      /// Newly added split fields
+      emotionalIssues: json['emotionalIssues'] as String?,
+      physicalStates: json['physicalStates'] as String?,
+      mentalConditions: json['mentalConditions'] as String?,
     );
   }
 
@@ -53,18 +92,30 @@ class RemedyDetailsModel {
     return {
       'name': name,
       'description': description,
-      'dosage': symptoms,
+      'symptoms': symptoms,
       'image': image,
-      'keywords/Tags': keywords,
+      'keywords': keywords,
       'related': related,
       'for': forCondition,
       'category': category,
-      'essences/properties': properties,
+      'properties': properties,
       'chakras': chakras,
       'element': element,
       'createdBy': createdBy,
       'imageUrl': imageUrl,
       'accupuncture': accupuncture,
+      'botanicalName': botanicalName,
+      'elementalLightCode': elementalLightCode,
+      'spiritualThemes': spiritualThemes,
+      'recommendedFor': recommendedFor,
+      'complementaryEssences': complementaryEssences,
+      'usageDosage': usageDosage,
+      'topicalBeauty': topicalBeauty,
+
+      /// New split fields
+      'emotionalIssues': emotionalIssues,
+      'physicalStates': physicalStates,
+      'mentalConditions': mentalConditions,
     };
   }
 

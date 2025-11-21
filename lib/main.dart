@@ -7,6 +7,7 @@ import 'package:lightweaver/core/constants/colors.dart';
 import 'package:lightweaver/core/services/notification_services.dart';
 import 'package:lightweaver/firebase_option.dart';
 import 'package:lightweaver/locator.dart';
+import 'package:lightweaver/ui/admin_remdies_data.dart';
 import 'package:lightweaver/ui/my_client/my_client_view_model.dart';
 import 'package:lightweaver/ui/remedy_details/remedy_details_view_model.dart';
 import 'package:lightweaver/ui/setting/appearance/apperance_view_model.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
                 title: 'LightWeaver',
                 theme: lightTheme,
                 darkTheme: darkTheme,
-                themeMode: viewModel.themeMode, // Dynamic theme mode
+                themeMode: viewModel.themeMode,
                 home: SplashScreen(),
               );
             },

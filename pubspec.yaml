@@ -56,7 +56,6 @@ dependencies:
   flutter_local_notifications: 
   cloud_firestore: 
   firebase_messaging:
-  firebase_storage:
   shared_preferences: 
   google_sign_in:
   flutter_facebook_auth:
@@ -71,6 +70,8 @@ dependencies:
   http:
   pdf:
   printing:
+  cached_network_image: ^3.4.1
+  firebase_storage: ^13.0.3
 
 dev_dependencies:
   change_app_package_name: ^1.5.0
