@@ -22,7 +22,7 @@ void main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => AppearanceViewModel(), // Handles theme loading
+      create: (_) => ApperanceViewModel(),
       child: const MyApp(),
     ),
   );

@@ -12,6 +12,7 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
   final RemedyCategoryModel remedyCategoryModel;
   final bool isSelected;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
   final int index; // Now required and non-nullable
 
   CustomRemedyDetailsCardWidget({
@@ -19,6 +20,7 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
     required this.remedyCategoryModel,
     required this.isSelected,
     required this.onTap,
+    this.onLongPress,
     required this.index,
   });
 
@@ -30,6 +32,7 @@ class CustomRemedyDetailsCardWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.only(bottom: 16.h),
