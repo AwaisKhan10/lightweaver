@@ -8,6 +8,8 @@ import 'package:lightweaver/core/constants/colors.dart';
 import 'package:lightweaver/core/constants/text_style.dart';
 import 'package:lightweaver/core/enums/view_state_model.dart';
 import 'package:lightweaver/core/model/remedy_details.dart';
+import 'package:lightweaver/core/model/flower_essence_model.dart';
+import 'package:lightweaver/core/model/bach_acupuncture_model.dart';
 import 'package:lightweaver/ui/notifications/notification_screen.dart';
 import 'package:lightweaver/ui/remedy_details/remedy_details_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -136,13 +138,125 @@ firstTab(RemedyDetailsModel? remedyDetails) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${remedyDetails!.name}' ?? "",
+                    remedyDetails!.name ?? "",
                     style: style18B.copyWith(color: primaryColor),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
                   20.verticalSpacingDiagonal,
 
+                  /// Flower Essence specific fields
+                  if (FlowerEssenceModel.isFlowerEssence(remedyDetails)) ...[
+                    /// Latin Name
+                    if (remedyDetails.latinName != null &&
+                        remedyDetails.latinName!.isNotEmpty) ...[
+                      Text(
+                        'Latin Name',
+                        style: style16B.copyWith(color: primaryColor),
+                      ),
+                      5.verticalSpace,
+                      Text(
+                        remedyDetails.latinName ?? "-",
+                        style: style12,
+                      ),
+                      16.verticalSpace,
+                    ],
+
+                    /// Positive Qualities
+                    if (remedyDetails.positiveQualities != null &&
+                        remedyDetails.positiveQualities!.isNotEmpty) ...[
+                      Text(
+                        'Positive Qualities',
+                        style: style16B.copyWith(color: primaryColor),
+                      ),
+                      5.verticalSpace,
+                      Text(
+                        remedyDetails.positiveQualities ?? "-",
+                        style: style12,
+                      ),
+                      16.verticalSpace,
+                    ],
+
+                    /// Imbalances
+                    if (remedyDetails.imbalances != null &&
+                        remedyDetails.imbalances!.isNotEmpty) ...[
+                      Text(
+                        'Imbalances',
+                        style: style16B.copyWith(color: primaryColor),
+                      ),
+                      5.verticalSpace,
+                      Text(
+                        remedyDetails.imbalances ?? "-",
+                        style: style12,
+                      ),
+                      16.verticalSpace,
+                    ],
+                  ],
+
+                  /// BACH ACUPUNCTURE specific fields
+                  if (BachAcupunctureModel.isBachAcupuncture(remedyDetails)) ...[
+                    /// Description
+                    if (remedyDetails.description != null &&
+                        remedyDetails.description!.isNotEmpty) ...[
+                      Text(
+                        'Description',
+                        style: style16B.copyWith(color: primaryColor),
+                      ),
+                      5.verticalSpace,
+                      Text(
+                        remedyDetails.description ?? "-",
+                        style: style12,
+                      ),
+                      16.verticalSpace,
+                    ],
+
+                    /// Acupuncture Point
+                    if (remedyDetails.acupuncturePoint != null &&
+                        remedyDetails.acupuncturePoint!.isNotEmpty) ...[
+                      Text(
+                        'Acupuncture Point',
+                        style: style16B.copyWith(color: primaryColor),
+                      ),
+                      5.verticalSpace,
+                      Text(
+                        remedyDetails.acupuncturePoint ?? "-",
+                        style: style12,
+                      ),
+                      16.verticalSpace,
+                    ],
+
+                    /// Synthesis
+                    if (remedyDetails.synthesis != null &&
+                        remedyDetails.synthesis!.isNotEmpty) ...[
+                      Text(
+                        'Synthesis',
+                        style: style16B.copyWith(color: primaryColor),
+                      ),
+                      5.verticalSpace,
+                      Text(
+                        remedyDetails.synthesis ?? "-",
+                        style: style12,
+                      ),
+                      16.verticalSpace,
+                    ],
+
+                    /// Plant Description
+                    if (remedyDetails.plantDescription != null &&
+                        remedyDetails.plantDescription!.isNotEmpty) ...[
+                      Text(
+                        'Plant Description',
+                        style: style16B.copyWith(color: primaryColor),
+                      ),
+                      5.verticalSpace,
+                      Text(
+                        remedyDetails.plantDescription ?? "-",
+                        style: style12,
+                      ),
+                      16.verticalSpace,
+                    ],
+                  ],
+
+                  remedyDetails.botanicalName != null &&
                   remedyDetails.botanicalName!.isNotEmpty
                       ?
                       /// Botanical Name
@@ -153,13 +267,16 @@ firstTab(RemedyDetailsModel? remedyDetails) {
                       : SizedBox(),
                   5.verticalSpace,
 
+                  remedyDetails.botanicalName != null &&
                   remedyDetails.botanicalName!.isNotEmpty
                       ? Text(remedyDetails.botanicalName ?? "-", style: style12)
                       : SizedBox(),
+                  remedyDetails.elementalLightCode == null ||
                   remedyDetails.elementalLightCode!.isEmpty
                       ? 20.verticalSpace
                       : SizedBox(),
 
+                  remedyDetails.elementalLightCode != null &&
                   remedyDetails.elementalLightCode!.isNotEmpty
                       ?
                       /// Elemental Light Code
@@ -168,12 +285,15 @@ firstTab(RemedyDetailsModel? remedyDetails) {
                         style: style16B.copyWith(color: primaryColor),
                       )
                       : SizedBox(),
+                  remedyDetails.elementalLightCode != null &&
                   remedyDetails.elementalLightCode!.isNotEmpty
                       ? 5.verticalSpace
                       : SizedBox(),
+                  remedyDetails.elementalLightCode != null &&
                   remedyDetails.elementalLightCode!.isNotEmpty
                       ? Text(remedyDetails.elementalLightCode ?? "-")
                       : SizedBox(),
+                  remedyDetails.elementalLightCode == null ||
                   remedyDetails.elementalLightCode!.isEmpty
                       ? 20.verticalSpace
                       : SizedBox(),
@@ -189,159 +309,208 @@ firstTab(RemedyDetailsModel? remedyDetails) {
         ),
 
         /// Spiritual Themes
-        Text('Spiritual Themes', style: style16B.copyWith(color: primaryColor)),
-        5.verticalSpace, Text(remedyDetails.spiritualThemes ?? "-"),
-        16.verticalSpace,
+        if (remedyDetails.spiritualThemes != null &&
+            remedyDetails.spiritualThemes!.isNotEmpty) ...[
+          Text(
+            'Spiritual Themes',
+            style: style16B.copyWith(color: primaryColor),
+          ),
+          5.verticalSpace,
+          Text(remedyDetails.spiritualThemes ?? "-"),
+          16.verticalSpace,
+        ],
 
         /// Recommended For
-        Text('Recommended For', style: style16B.copyWith(color: primaryColor)),
-        5.verticalSpace,
-        (remedyDetails.recommendedFor?.isEmpty ?? true)
-            ? Text("-")
-            : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-                  remedyDetails.recommendedFor!.map((item) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("• ", style: style14.copyWith(color: blackColor)),
-                        Expanded(
-                          child: Text(
-                            item,
-                            style: style14.copyWith(color: blackColor),
-                          ),
+        if (remedyDetails.recommendedFor != null &&
+            remedyDetails.recommendedFor!.isNotEmpty) ...[
+          Text(
+            'Recommended For',
+            style: style16B.copyWith(color: primaryColor),
+          ),
+          5.verticalSpace,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+                remedyDetails.recommendedFor!.map((item) {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("• ", style: style14.copyWith(color: blackColor)),
+                      Expanded(
+                        child: Text(
+                          item,
+                          style: style14.copyWith(color: blackColor),
                         ),
-                      ],
-                    );
-                  }).toList(),
-            ),
+                      ),
+                    ],
+                  );
+                }).toList(),
+          ),
+          16.verticalSpace,
+        ],
 
         /// Complementary Essences
-        Text(
-          'Complementary Essences',
-          style: style16B.copyWith(color: primaryColor),
-        ),
-        5.verticalSpace,
-        (remedyDetails.complementaryEssences?.isEmpty ?? true)
-            ? Text("-")
-            : Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children:
-                  remedyDetails.complementaryEssences!.map((item) {
-                    return Chip(
-                      label: Text(item),
-                      backgroundColor: Colors.grey.shade200,
-                    );
-                  }).toList(),
-            ),
-
-        20.verticalSpace,
+        if (remedyDetails.complementaryEssences != null &&
+            remedyDetails.complementaryEssences!.isNotEmpty) ...[
+          Text(
+            'Complementary Essences',
+            style: style16B.copyWith(color: primaryColor),
+          ),
+          5.verticalSpace,
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children:
+                remedyDetails.complementaryEssences!.map((item) {
+                  return Chip(
+                    label: Text(item),
+                    backgroundColor: Colors.grey.shade200,
+                  );
+                }).toList(),
+          ),
+          20.verticalSpace,
+        ],
 
         /// Usage/Dosage
-        Text('Usage/Dosage', style: style16B.copyWith(color: primaryColor)),
-        5.verticalSpace,
-        Text(remedyDetails.usageDosage ?? "-"),
-        16.verticalSpace,
+        if (remedyDetails.usageDosage != null &&
+            remedyDetails.usageDosage!.isNotEmpty) ...[
+          Text(
+            'Usage/Dosage',
+            style: style16B.copyWith(color: primaryColor),
+          ),
+          5.verticalSpace,
+          Text(remedyDetails.usageDosage ?? "-"),
+          16.verticalSpace,
+        ],
 
         /// Acupuncture site
-        Text('Acupuncture site', style: style16B.copyWith(color: primaryColor)),
-        5.verticalSpace,
-        Text(remedyDetails.accupuncture ?? "-"),
-        16.verticalSpace,
+        if (remedyDetails.accupuncture != null &&
+            remedyDetails.accupuncture!.isNotEmpty) ...[
+          Text(
+            'Acupuncture site',
+            style: style16B.copyWith(color: primaryColor),
+          ),
+          5.verticalSpace,
+          Text(remedyDetails.accupuncture ?? "-"),
+          16.verticalSpace,
+        ],
 
-        /// Emotional/Physical/Mental
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Emotional/Physical/Mental',
-              style: style16B.copyWith(color: primaryColor),
+        /// Emotional Issues
+        if (remedyDetails.emotionalIssues != null &&
+            remedyDetails.emotionalIssues!.isNotEmpty) ...[
+          Text(
+            'Emotional Issues:',
+            style: style14.copyWith(
+              fontWeight: FontWeight.bold,
+              color: blackColor,
             ),
-            8.verticalSpace,
-            if (remedyDetails.emotionalIssues != null &&
-                remedyDetails.emotionalIssues!.isNotEmpty)
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Emotional Issues: ',
-                      style: style14.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: blackColor,
-                      ),
-                    ),
-                    TextSpan(
-                      text: remedyDetails.emotionalIssues!,
-                      style: style14.copyWith(
-                        fontWeight: FontWeight.normal,
-                        color: blackColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            if (remedyDetails.physicalStates != null &&
-                remedyDetails.physicalStates!.isNotEmpty) ...[
-              8.verticalSpace,
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Physical States/Energetic Influence: ',
-                      style: style14.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: blackColor,
-                      ),
-                    ),
-                    TextSpan(
-                      text: remedyDetails.physicalStates!,
-                      style: style14.copyWith(
-                        fontWeight: FontWeight.normal,
-                        color: blackColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            if (remedyDetails.mentalConditions != null &&
-                remedyDetails.mentalConditions!.isNotEmpty) ...[
-              8.verticalSpace,
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Mental/Spiritual Conditions: ',
-                      style: style14.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: blackColor,
-                      ),
-                    ),
-                    TextSpan(
-                      text: remedyDetails.mentalConditions!,
-                      style: style14.copyWith(
-                        fontWeight: FontWeight.normal,
-                        color: blackColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ],
-        ),
+          ),
+          5.verticalSpace,
+          Text(
+            remedyDetails.emotionalIssues!,
+            style: style14.copyWith(
+              fontWeight: FontWeight.normal,
+              color: blackColor,
+            ),
+          ),
+          16.verticalSpace,
+        ],
 
-        // 5.verticalSpace,
-        // Text(remedyDetails.emotionalPhysicalMental?.join(", ") ?? "-"),
-        20.verticalSpace,
+        /// Physical States/Energetic Influence
+        if (remedyDetails.physicalStatesEnergeticInfluence != null &&
+            remedyDetails.physicalStatesEnergeticInfluence!.isNotEmpty) ...[
+          Text(
+            'Physical States/Energetic Influence:',
+            style: style14.copyWith(
+              fontWeight: FontWeight.bold,
+              color: blackColor,
+            ),
+          ),
+          5.verticalSpace,
+          Text(
+            remedyDetails.physicalStatesEnergeticInfluence!,
+            style: style14.copyWith(
+              fontWeight: FontWeight.normal,
+              color: blackColor,
+            ),
+          ),
+          16.verticalSpace,
+        ],
+
+        /// Emotional Symptoms
+        if (remedyDetails.emotionalSymptoms != null &&
+            remedyDetails.emotionalSymptoms!.isNotEmpty) ...[
+          Text(
+            'Emotional Symptoms:',
+            style: style14.copyWith(
+              fontWeight: FontWeight.bold,
+              color: blackColor,
+            ),
+          ),
+          5.verticalSpace,
+          Text(
+            remedyDetails.emotionalSymptoms!,
+            style: style14.copyWith(
+              fontWeight: FontWeight.normal,
+              color: blackColor,
+            ),
+          ),
+          16.verticalSpace,
+        ],
+
+        /// Physical States
+        if (remedyDetails.physicalStates != null &&
+            remedyDetails.physicalStates!.isNotEmpty) ...[
+          Text(
+            'Physical States:',
+            style: style14.copyWith(
+              fontWeight: FontWeight.bold,
+              color: blackColor,
+            ),
+          ),
+          5.verticalSpace,
+          Text(
+            remedyDetails.physicalStates!,
+            style: style14.copyWith(
+              fontWeight: FontWeight.normal,
+              color: blackColor,
+            ),
+          ),
+          16.verticalSpace,
+        ],
+
+        /// Mental/Spiritual Blocks
+        if (remedyDetails.mentalConditions != null &&
+            remedyDetails.mentalConditions!.isNotEmpty) ...[
+          Text(
+            'Mental/Spiritual Blocks:',
+            style: style14.copyWith(
+              fontWeight: FontWeight.bold,
+              color: blackColor,
+            ),
+          ),
+          5.verticalSpace,
+          Text(
+            remedyDetails.mentalConditions!,
+            style: style14.copyWith(
+              fontWeight: FontWeight.normal,
+              color: blackColor,
+            ),
+          ),
+          20.verticalSpace,
+        ],
 
         /// Topical / Beauty
-        Text('Topical / Beauty', style: style16B.copyWith(color: primaryColor)),
-        5.verticalSpace,
-        Text(remedyDetails.topicalBeauty ?? "-"),
-        20.verticalSpace,
+        if (remedyDetails.topicalBeauty != null &&
+            remedyDetails.topicalBeauty!.isNotEmpty) ...[
+          Text(
+            'Topical / Beauty',
+            style: style16B.copyWith(color: primaryColor),
+          ),
+          5.verticalSpace,
+          Text(remedyDetails.topicalBeauty ?? "-"),
+          20.verticalSpace,
+        ],
         // Text('Start Formula', style: style14B.copyWith(color: primaryColor)),
         // 10.verticalSpace,
         // Text(

@@ -125,6 +125,50 @@ class DatabaseServices {
     }
   }
 
+  /// Delete a remedy category from Firestore
+  Future<bool> deleteRemedyCategory(String categoryId) async {
+    try {
+      await _db.collection('remedy_categories').doc(categoryId).delete();
+      debugPrint('✅ Category deleted successfully: $categoryId');
+      return true;
+    } catch (e, s) {
+      debugPrint('❌ Exception @deleteRemedyCategory: $e');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+
+  /// Delete a remedy from a category
+  Future<bool> deleteRemedyFromCategory(String categoryId, String remedyName) async {
+    try {
+      final docRef = _db.collection('remedy_categories').doc(categoryId);
+      final doc = await docRef.get();
+      
+      if (!doc.exists) {
+        debugPrint('❌ Category not found: $categoryId');
+        return false;
+      }
+
+      final data = doc.data()!;
+      final remedies = (data['remedies'] as List<dynamic>?) ?? [];
+      
+      // Remove the remedy with matching name
+      final updatedRemedies = remedies.where((remedy) {
+        final remedyMap = remedy as Map<String, dynamic>;
+        return remedyMap['name'] != remedyName;
+      }).toList();
+
+      // Update the document with the filtered remedies
+      await docRef.update({'remedies': updatedRemedies});
+      debugPrint('✅ Remedy deleted successfully: $remedyName from category $categoryId');
+      return true;
+    } catch (e, s) {
+      debugPrint('❌ Exception @deleteRemedyFromCategory: $e');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+
   Future<List<RemedyDetailsModel>> getRemediesByNameLocally(String name) async {
     final snapshot =
         await FirebaseFirestore.instance.collection('remedyCategories').get();

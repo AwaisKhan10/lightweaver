@@ -28,6 +28,58 @@ class RemedyDetailsScreen extends StatelessWidget {
               await model.getRemedies();
             },
             child: Scaffold(
+              ///
+              /// Floating Action Button
+              /// 
+              // floatingActionButton: FloatingActionButton(
+              //   onPressed: () {
+              //     showModalBottomSheet(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return SafeArea(
+              //           child: Column(
+              //             mainAxisSize: MainAxisSize.min,
+              //             children: [
+              //               ListTile(
+              //                 leading: Icon(Icons.local_florist, color: Colors.green.shade700),
+              //                 title: const Text('Add Flower Essence'),
+              //                 onTap: () async {
+              //                   Navigator.pop(context);
+              //                   final result = await Get.to(() => const AdminFlowerEssenceForm());
+              //                   // Refresh the remedy list when coming back from the form
+              //                   if (result == true) {
+              //                     model.getRemedies();
+              //                   }
+              //                 },
+              //               ),
+              //               ListTile(
+              //                 leading: Icon(Icons.medical_services, color: Colors.blue.shade700),
+              //                 title: const Text('Add BACH ACUPUNCTURE'),
+              //                 onTap: () async {
+              //                   Navigator.pop(context);
+              //                   final result = await Get.to(() => const AdminBachAcupunctureForm());
+              //                   // Refresh the remedy list when coming back from the form
+              //                   if (result == true) {
+              //                     model.getRemedies();
+              //                   }
+              //                 },
+              //               ),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              //   backgroundColor: primaryColor,
+              //   child: const Icon(
+              //     Icons.add,
+              //     color: Colors.white,
+              //   ),
+              // ),
+           
+            ///
+            /// Body
+            /// 
               body: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -120,6 +172,56 @@ class RemedyDetailsScreen extends StatelessWidget {
                                         model.selectQuickLink(index);
                                         model.selectTabFunction(index);
                                       },
+                                      onLongPress: () async {
+                                        if (index == 0) {
+                                          // Cannot delete "All" tab
+                                          Get.snackbar(
+                                            'Cannot Delete',
+                                            'Cannot delete the "All" tab',
+                                            snackPosition: SnackPosition.BOTTOM,
+                                          );
+                                          return;
+                                        }
+                                        
+                                        final confirmed = await Get.dialog<bool>(
+                                          AlertDialog(
+                                            title: const Text('Delete Category'),
+                                            content: Text(
+                                              'Are you sure you want to delete "${model.remedyList[index].categoryName}" category? This will delete all remedies in this category.',
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Get.back(result: false),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Get.back(result: true),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.red,
+                                                ),
+                                                child: const Text('Delete'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        if (confirmed == true) {
+                                          final success = await model.deleteCategory(index);
+                                          if (success) {
+                                            Get.snackbar(
+                                              'Success',
+                                              'Category deleted successfully',
+                                              snackPosition: SnackPosition.BOTTOM,
+                                            );
+                                          } else {
+                                            Get.snackbar(
+                                              'Error',
+                                              'Failed to delete category',
+                                              snackPosition: SnackPosition.BOTTOM,
+                                            );
+                                          }
+                                        }
+                                      },
                                     );
                                   },
                                 ),
@@ -164,6 +266,46 @@ class RemedyDetailsScreen extends StatelessWidget {
                                           ),
                                         );
                                       },
+                                      onLongPress: () async {
+                                        final confirmed = await Get.dialog<bool>(
+                                          AlertDialog(
+                                            title: const Text('Delete Remedy'),
+                                            content: Text(
+                                              'Are you sure you want to delete "${remedy.name ?? 'this remedy'}"?',
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Get.back(result: false),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Get.back(result: true),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.red,
+                                                ),
+                                                child: const Text('Delete'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        if (confirmed == true) {
+                                          final success = await model.deleteRemedy(remedy);
+                                          if (success) {
+                                            Get.snackbar(
+                                              'Success',
+                                              'Remedy deleted successfully',
+                                              snackPosition: SnackPosition.BOTTOM,
+                                            );
+                                          } else {
+                                            Get.snackbar(
+                                              'Error',
+                                              'Failed to delete remedy',
+                                              snackPosition: SnackPosition.BOTTOM,
+                                            );
+                                          }
+                                        }
+                                      },
                                       index: 0,
                                     );
                                   },
@@ -192,12 +334,13 @@ Widget _customTabs({
 
   required String title,
   required final VoidCallback onTap,
+  final VoidCallback? onLongPress,
 }) {
   final bool isSelected = model.selectedQuickLinkIndex == index;
 
   return GestureDetector(
     onTap: onTap,
-
+    onLongPress: onLongPress,
     child:
         title.isEmpty
             ? SizedBox()
@@ -211,7 +354,7 @@ Widget _customTabs({
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 child: Center(
                   child: Text(
-                    title ?? "",
+                    title,
                     style: style14.copyWith(
                       color: isSelected ? whiteColor : blackColor,
                     ),

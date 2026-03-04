@@ -23,10 +23,22 @@ class RemedyDetailsModel {
   String? usageDosage;
   String? topicalBeauty;
 
-  // Split emotional/physical/mental into three separate fields
+  // Split emotional/physical/mental into separate fields
   String? emotionalIssues;
   String? physicalStates;
   String? mentalConditions;
+  String? physicalStatesEnergeticInfluence; // Physical States/Energetic Influence
+  String? emotionalSymptoms; // Emotional Symptoms
+
+  // Flower Essence specific fields
+  String? latinName;
+  String? positiveQualities;
+  String? imbalances;
+
+  // BACH ACUPUNCTURE specific fields
+  String? acupuncturePoint;
+  String? synthesis;
+  String? plantDescription;
 
   RemedyDetailsModel({
     this.name,
@@ -53,6 +65,14 @@ class RemedyDetailsModel {
     this.emotionalIssues,
     this.physicalStates,
     this.mentalConditions,
+    this.physicalStatesEnergeticInfluence,
+    this.emotionalSymptoms,
+    this.latinName,
+    this.positiveQualities,
+    this.imbalances,
+    this.acupuncturePoint,
+    this.synthesis,
+    this.plantDescription,
   });
 
   factory RemedyDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -85,6 +105,18 @@ class RemedyDetailsModel {
       emotionalIssues: json['emotionalIssues'] as String?,
       physicalStates: json['physicalStates'] as String?,
       mentalConditions: json['mentalConditions'] as String?,
+      physicalStatesEnergeticInfluence: json['physicalStatesEnergeticInfluence'] as String?,
+      emotionalSymptoms: json['emotionalSymptoms'] as String?,
+
+      /// Flower Essence fields
+      latinName: json['latinName'] as String?,
+      positiveQualities: json['positiveQualities'] as String?,
+      imbalances: json['imbalances'] as String?,
+
+      /// BACH ACUPUNCTURE fields
+      acupuncturePoint: json['acupuncturePoint'] as String?,
+      synthesis: json['synthesis'] as String?,
+      plantDescription: json['plantDescription'] as String?,
     );
   }
 
@@ -116,6 +148,18 @@ class RemedyDetailsModel {
       'emotionalIssues': emotionalIssues,
       'physicalStates': physicalStates,
       'mentalConditions': mentalConditions,
+      'physicalStatesEnergeticInfluence': physicalStatesEnergeticInfluence,
+      'emotionalSymptoms': emotionalSymptoms,
+
+      /// Flower Essence fields
+      'latinName': latinName,
+      'positiveQualities': positiveQualities,
+      'imbalances': imbalances,
+
+      /// BACH ACUPUNCTURE fields
+      'acupuncturePoint': acupuncturePoint,
+      'synthesis': synthesis,
+      'plantDescription': plantDescription,
     };
   }
 

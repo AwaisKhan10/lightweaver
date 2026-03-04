@@ -24,6 +24,8 @@ class _AdminRemedyFormState extends State<AdminRemedyForm> {
   final emotionalController = TextEditingController();
   final physicalController = TextEditingController();
   final mentalController = TextEditingController();
+  final physicalStatesEnergeticInfluenceController = TextEditingController();
+  final emotionalSymptomsController = TextEditingController();
   final descriptionController = TextEditingController();
 
   final List<String> complementaryEssences = [];
@@ -80,6 +82,8 @@ class _AdminRemedyFormState extends State<AdminRemedyForm> {
             emotionalIssues: emotionalController.text,
             physicalStates: physicalController.text,
             mentalConditions: mentalController.text,
+            physicalStatesEnergeticInfluence: physicalStatesEnergeticInfluenceController.text,
+            emotionalSymptoms: emotionalSymptomsController.text,
             complementaryEssences: complementaryEssences,
             recommendedFor: recommendedFor,
             keywords: keywords,
@@ -124,6 +128,8 @@ class _AdminRemedyFormState extends State<AdminRemedyForm> {
       emotionalController.clear();
       physicalController.clear();
       mentalController.clear();
+      physicalStatesEnergeticInfluenceController.clear();
+      emotionalSymptomsController.clear();
       descriptionController.clear();
 
       setState(() {
@@ -261,7 +267,7 @@ class _AdminRemedyFormState extends State<AdminRemedyForm> {
               ),
 
               20.verticalSpace,
-              Text("Emotional/Physical/Mental", style: style18B),
+              Text("Emotional Issues", style: style18B),
               TextFormField(
                 controller: emotionalController,
                 decoration: const InputDecoration(
@@ -270,11 +276,38 @@ class _AdminRemedyFormState extends State<AdminRemedyForm> {
                 ),
               ),
               20.verticalSpace,
-              Text("Emotional/Physical/Mental	", style: style18B),
+              Text("Physical States/Energetic Influence", style: style18B),
+              TextFormField(
+                controller: physicalStatesEnergeticInfluenceController,
+                decoration: const InputDecoration(
+                  labelText: 'Physical States/Energetic Influence',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              20.verticalSpace,
+              Text("Emotional Symptoms", style: style18B),
+              TextFormField(
+                controller: emotionalSymptomsController,
+                decoration: const InputDecoration(
+                  labelText: 'Emotional Symptoms',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              20.verticalSpace,
+              Text("Physical States", style: style18B),
               TextFormField(
                 controller: physicalController,
                 decoration: const InputDecoration(
                   labelText: 'Physical States',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              20.verticalSpace,
+              Text("Mental/Spiritual Blocks", style: style18B),
+              TextFormField(
+                controller: mentalController,
+                decoration: const InputDecoration(
+                  labelText: 'Mental/Spiritual Blocks',
                   border: OutlineInputBorder(),
                 ),
               ),

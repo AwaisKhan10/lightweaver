@@ -8,14 +8,22 @@ class ApperanceViewModel extends BaseViewModel {
   ThemeMode get themeMode => _themeMode;
 
   ApperanceViewModel() {
-    _loadThemeFromPrefs();
+    // Defer SharedPreferences access to after first frame to avoid iOS
+    // NSRangeException (subdataWithRange) when decoding platform channel data.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadThemeFromPrefs();
+    });
   }
 
   Future<void> _loadThemeFromPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isDark = prefs.getBool('isDarkTheme') ?? false;
-    _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final isDark = prefs.getBool('isDarkTheme') ?? false;
+      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+      notifyListeners();
+    } catch (_) {
+      // Keep default theme if prefs fail (e.g. corrupted iOS UserDefaults).
+    }
   }
 
   Future<void> setTheme(ThemeMode mode) async {

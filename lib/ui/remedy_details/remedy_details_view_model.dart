@@ -232,4 +232,71 @@ class RemedyDetailsViewModel extends BaseViewModel {
     selectedCardIndex = index;
     notifyListeners();
   }
+
+  /// Delete a remedy category (tab)
+  Future<bool> deleteCategory(int index) async {
+    if (index == 0) {
+      // Cannot delete "All" tab
+      return false;
+    }
+
+    final category = remedyList[index];
+    if (category.id == null || category.id == '0') {
+      return false;
+    }
+
+    setState(ViewState.busy);
+    final success = await databaseServices.deleteRemedyCategory(category.id!);
+    
+    if (success) {
+      // Refresh the list
+      await getRemedies();
+    } else {
+      setState(ViewState.idle);
+    }
+    
+    notifyListeners();
+    return success;
+  }
+
+  /// Delete a remedy from a category
+  Future<bool> deleteRemedy(RemedyDetailsModel remedy) async {
+    if (remedy.name == null || remedy.category == null) {
+      return false;
+    }
+
+    setState(ViewState.busy);
+    
+    // Find the category document ID by category name
+    final categories = await databaseServices.getRemedyCategories();
+    RemedyCategoryModel? targetCategory;
+    
+    for (var cat in categories) {
+      if (cat.categoryName?.trim().toLowerCase() == remedy.category?.trim().toLowerCase()) {
+        targetCategory = cat;
+        break;
+      }
+    }
+
+    if (targetCategory?.id == null) {
+      setState(ViewState.idle);
+      notifyListeners();
+      return false;
+    }
+
+    final success = await databaseServices.deleteRemedyFromCategory(
+      targetCategory!.id!,
+      remedy.name!,
+    );
+    
+    if (success) {
+      // Refresh the list
+      await getRemedies();
+    } else {
+      setState(ViewState.idle);
+    }
+    
+    notifyListeners();
+    return success;
+  }
 }
