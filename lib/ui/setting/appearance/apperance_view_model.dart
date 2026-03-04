@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lightweaver/core/others/base_view_model.dart';
 
-class ApperanceViewModel extends BaseViewModel {
+class AppearanceViewModel extends BaseViewModel {
   ThemeMode _themeMode = ThemeMode.light;
 
   ThemeMode get themeMode => _themeMode;

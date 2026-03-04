@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => RemedyDetailsViewModel()),
             ChangeNotifierProvider(create: (_) => MyClientViewModel()),
           ],
-          child: Consumer<ApperanceViewModel>(
+          child: Consumer<AppearanceViewModel>(
             builder: (context, viewModel, _) {
               return GetMaterialApp(
                 debugShowCheckedModeBanner: false,
